@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using static CarMovementManager;
 
 public class EngineManager
 {
     private Wheel[] _wheels;
-
     private Rigidbody _carRigidbody;
    
     private CarData _carData;
@@ -17,63 +15,45 @@ public class EngineManager
     private Coroutine _decelerateCar;
 
     public event Action OnDrift;
+
     public void Init(CarData carData, Wheel[] wheels, Rigidbody carRigidbody)
     {
         _carData = carData;
         _wheels = wheels;
         _carRigidbody = carRigidbody;
     }
+
     public void UpdateLocalVelocityZ(float newLocalVelocityZ)
     {
         _localVelocityZ = newLocalVelocityZ;
     }
+
+    public void StartCarDevelerating()
+    {
+        _decelerateCar = CoroutineServices.instance.StartRoutine(DecelerateCarRepeating(0.1f));
+    }
+
+    public void StopCarDevelerating()
+    {
+        CoroutineServices.instance.StopRoutine(_decelerateCar);
+    }
+
     // This method apply positive torque to the wheels in order to go forward.
     public void GoForward(ref float carSpeed)
     {
         OnDrift?.Invoke();
-        // The following part sets the throttle power to 1 smoothly.
         SmoothThrottleDecrease(1f);
-
-        if (_localVelocityZ < -1f)
-        {
-            Brakes();
-        }
-        else
-        {
-            if (Mathf.RoundToInt(carSpeed) < _carData.maxSpeed)
-            {
-                ApplyTorque();
-            }
-            else
-            {
-                ThrottleChange(0);
-            }
-        }
+        HandleTorque(ref carSpeed, _carData.maxSpeed, -1f, false);
     }
-
+    
     // This method apply negative torque to the wheels in order to go backwards.
     public void GoReverse(ref float carSpeed)
     {
         OnDrift?.Invoke();
-        // The following part sets the throttle power to -1 smoothly.
         SmoothThrottleDecrease(-1f);
-
-        if (_localVelocityZ > 1f)
-        {
-            Brakes();
-        }
-        else
-        {
-            if (Mathf.Abs(Mathf.RoundToInt(carSpeed)) < _carData.maxReverseSpeed)
-            {
-                ApplyTorque();
-            }
-            else
-            {
-                ThrottleChange(0);
-            }
-        }
+        HandleTorque(ref carSpeed, _carData.maxReverseSpeed, 1f, true);
     }
+
     public void ThrottleChange(float torque)
     {
         foreach (var wheel in _wheels)
@@ -81,18 +61,31 @@ public class EngineManager
             wheel.wheelCollider.motorTorque = torque;
         }
     }
-    public void StartCarDevelerating()
+
+    private void HandleTorque(ref float carSpeed, float maxSpeed, float directionThreshold, bool isReversing)
     {
-        _decelerateCar = CoroutineServices.instance.StartRoutine(DecelerateCarRepeating(0.1f));
+        if ((isReversing && _localVelocityZ > directionThreshold) || (!isReversing && _localVelocityZ < directionThreshold))
+        {
+            Brakes();
+        }
+        else
+        {
+            if (Mathf.Abs(Mathf.RoundToInt(carSpeed)) < maxSpeed)
+            {
+                ApplyTorque();
+            }
+            else
+            {
+                ThrottleChange(0);
+            }
+        }
     }
-    public void StopCarDevelerating()
-    {
-        CoroutineServices.instance.StopRoutine(_decelerateCar);
-    }
+
     private void Brakes()
     {
         BrakeTorqueChange(_carData.brakeForce);
     }
+
     private void DecelerateCar()
     {
         OnDrift?.Invoke();
@@ -100,8 +93,10 @@ public class EngineManager
         ApplyDeceleration();
         StopCarIfSlow();
     }
+
     private void SmoothThrottleDecrease(float direction)
     {
+        // The following part sets the throttle power to direction smoothly.
         _throttleAxis += direction * Time.deltaTime * 3f;
         _throttleAxis = Mathf.Clamp(_throttleAxis, direction, 1f * direction);
     }
@@ -111,6 +106,7 @@ public class EngineManager
         ThrottleChange((_carData.accelerationMultiplier * 50f) * _throttleAxis);
         BrakeTorqueChange(0);
     }
+
     // This function applies brake torque to the wheels according to the brake force given by the user.
     private void BrakeTorqueChange(float torque)
     {
@@ -119,6 +115,7 @@ public class EngineManager
             wheel.wheelCollider.brakeTorque = torque;
         }
     }
+
     private void SmoothThrottleReset()
     {
         if (_throttleAxis != 0f)

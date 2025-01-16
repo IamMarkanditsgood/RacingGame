@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using static CarMovementManager;
 
 public class HandbrakeManager
 {
@@ -11,7 +10,6 @@ public class HandbrakeManager
 
     private bool _isTractionLocked;
     private float _driftingAxis;
-    private float _localVelocityX;
     private Coroutine _recoverTraction;
     public event Action OnDrift;
 
@@ -21,9 +19,8 @@ public class HandbrakeManager
         _wheels = wheels;
         _wheelsFriction = wheelsFriction;
     }
-    public void HandbrakeActivate(EngineManager engine)
+    public void HandbrakeActivate()
     {
-        engine.StopCarDevelerating();
         Handbrake();
     }
     public void RecoverTraction()
@@ -49,10 +46,6 @@ public class HandbrakeManager
             }
             _driftingAxis = 0f;
         }
-    }
-    public void UpdateLocalVelocityX(float newLocalVelocityX)
-    {
-        _localVelocityX = newLocalVelocityX;
     }
 
     // This function is used to make the car lose traction. By using this, the car will start drifting. The amount of traction lost
@@ -97,7 +90,6 @@ public class HandbrakeManager
         wheelFriction.extremumSlip = extremumSlip;
         wheelCollider.sidewaysFriction = wheelFriction;
     }
-
 
     private IEnumerator RecoverTractionDelay(float delay)
     {

@@ -67,9 +67,9 @@ public partial class CarMovementManager
     public void UpdateCarData(GameObject car)
     {
         _carSpeed = (2 * Mathf.PI * _wheels[0].wheelCollider.radius * _wheels[0].wheelCollider.rpm * 60) / 1000;
+        GameEvents.UpdateSpeed(_carSpeed);
 
         _localVelocityX = car.transform.InverseTransformDirection(_carRigidbody.velocity).x;
-        _handbrakeManager.UpdateLocalVelocityX(_localVelocityX);
 
         _localVelocityZ = car.transform.InverseTransformDirection(_carRigidbody.velocity).z;
         _engineManager.UpdateLocalVelocityZ(_localVelocityZ);
@@ -163,7 +163,7 @@ public partial class CarMovementManager
         if (state == 1)
         {
             _deceleratingCar = true;
-            _handbrakeManager.HandbrakeActivate(_engineManager);
+            _handbrakeManager.HandbrakeActivate();
         }
         else if (state == 0)
         {
@@ -173,7 +173,7 @@ public partial class CarMovementManager
 
     private void HandleDriftEffect()
     {
-        CarEvents.DriftEffect(_isDrifting);
         _isDrifting = Mathf.Abs(_localVelocityX) > 2.5f;
+        CarEvents.Drift(_isDrifting);
     }
 }

@@ -5,15 +5,9 @@ using UnityEngine;
 
 public static class CarEvents 
 {
-    public static event Action<bool> OnDriftEffect;
+    public static event Action<bool> OnDrift;
     public static event Action<bool> OnTireSkid;
 
-    public static void DriftEffect(bool state)
-    {
-        OnDriftEffect?.Invoke(state);   
-    }
-    public static void TireSkid(bool state)
-    {
-        OnTireSkid?.Invoke(state);
-    }
+    public static void Drift(bool state) => OnDrift?.Invoke(state);
+    public static void TireSkid(bool state) => OnTireSkid?.Invoke(state);
 }

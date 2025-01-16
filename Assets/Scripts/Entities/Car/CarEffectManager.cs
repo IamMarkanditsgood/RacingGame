@@ -14,13 +14,13 @@ public class CarEffectManager
 
     public void Subscribe()
     {
-        CarEvents.OnDriftEffect += HandleDriftEffect;
+        CarEvents.OnDrift += HandleDriftEffect;
         CarEvents.OnTireSkid += HandleTireSkid;
     }
 
     public void UnSubscribe()
     {
-        CarEvents.OnDriftEffect -= HandleDriftEffect;
+        CarEvents.OnDrift -= HandleDriftEffect;
         CarEvents.OnTireSkid -= HandleTireSkid;
     }
 
