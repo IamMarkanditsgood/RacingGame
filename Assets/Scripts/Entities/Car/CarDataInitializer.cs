@@ -18,7 +18,6 @@ public class CarDataInitializer
         newCarData.decelerationMultiplier = _basicCarConfig.DecelerationMultiplier;
         newCarData.handbrakeDriftMultiplier = _basicCarConfig.HandbrakeDriftMultiplier;
         newCarData.bodyMassCenter = _basicCarConfig.BodyMassCenter;
-        newCarData.useEffects = _basicCarConfig.UseEffects;
         newCarData.canHandbrake = _basicCarConfig.CanHandbrake;
 
         CarData = newCarData;

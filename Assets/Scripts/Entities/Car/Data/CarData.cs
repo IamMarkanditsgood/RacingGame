@@ -13,6 +13,5 @@ public class CarData
     public int decelerationMultiplier;
     public int handbrakeDriftMultiplier;
     public Vector3 bodyMassCenter;
-    public bool useEffects;
     public bool canHandbrake;
 }

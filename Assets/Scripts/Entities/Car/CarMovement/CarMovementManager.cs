@@ -6,19 +6,15 @@ using UnityEngine;
 [Serializable]
 public class CarMovementManager
 {
-    [Header("Wheels")]
-    [SerializeField] private GameObject frontLeftMesh;
-    [SerializeField] private WheelCollider frontLeftCollider;
-    [Space(10)]
-    [SerializeField] private GameObject frontRightMesh;
-    [SerializeField] private WheelCollider frontRightCollider;
-    [Space(10)]
-    [SerializeField] private GameObject rearLeftMesh;
-    [SerializeField] private WheelCollider rearLeftCollider;
-    [Space(10)]
-    [SerializeField] private GameObject rearRightMesh;
-    [SerializeField] private WheelCollider rearRightCollider;
+    [Header("Wheels (FL,FR,RL,RR)")]
+    [SerializeField] private Wheel[] _wheels;
 
+    [Serializable]
+    public class Wheel
+    {
+        public GameObject wheelMesh;
+        public WheelCollider wheelCollider;
+    }
 
     [SerializeField] private float _carSpeed;
     [SerializeField] private bool _isDrifting;
@@ -32,14 +28,12 @@ public class CarMovementManager
     private float _localVelocityX;
     private bool _deceleratingCar;
 
-    private WheelFrictionCurve FLwheelFriction;
-    private float FLWextremumSlip;
-    private WheelFrictionCurve FRwheelFriction;
-    private float FRWextremumSlip;
-    private WheelFrictionCurve RLwheelFriction;
-    private float RLWextremumSlip;
-    private WheelFrictionCurve RRwheelFriction;
-    private float RRWextremumSlip;
+    private WheelFrictionData[] _wheelsFriction = new WheelFrictionData[4];
+    public class WheelFrictionData
+    {
+        public WheelFrictionCurve wheelFriction;
+        public float wextremumSlip;
+    }
 
     private CarData _carData = new CarData();
 
@@ -58,7 +52,8 @@ public class CarMovementManager
 
     public void UpdateCarData(GameObject car)
     {
-        _carSpeed = (2 * Mathf.PI * frontLeftCollider.radius * frontLeftCollider.rpm * 60) / 1000;
+        _carSpeed = (2 * Mathf.PI * _wheels[0].wheelCollider.radius * _wheels[0].wheelCollider.rpm * 60) / 1000;
+
         _localVelocityX = car.transform.InverseTransformDirection(_carRigidbody.velocity).x;
         _localVelocityZ = car.transform.InverseTransformDirection(_carRigidbody.velocity).z;
     }
@@ -98,10 +93,10 @@ public class CarMovementManager
     }
     public void AnimateWheelMeshes()
     {
-        UpdateWheelPose(frontLeftCollider, frontLeftMesh);
-        UpdateWheelPose(frontRightCollider, frontRightMesh);
-        UpdateWheelPose(rearLeftCollider, rearLeftMesh);
-        UpdateWheelPose(rearRightCollider, rearRightMesh);
+        foreach (var wheel in _wheels)
+        {
+            UpdateWheelPose(wheel.wheelCollider, wheel.wheelMesh);
+        }
     }
     private void GoForwardHandler()
     {
@@ -141,13 +136,17 @@ public class CarMovementManager
         }
     }
 
-
     private void InitWheels()
     {
-        InitWheelFriction(frontLeftCollider, ref FLwheelFriction, ref FLWextremumSlip);
-        InitWheelFriction(frontRightCollider, ref FRwheelFriction, ref FRWextremumSlip);
-        InitWheelFriction(rearLeftCollider, ref RLwheelFriction, ref RLWextremumSlip);
-        InitWheelFriction(rearRightCollider, ref RRwheelFriction, ref RRWextremumSlip);
+        for (int i = 0; i < _wheelsFriction.Length; i++)
+        {
+            _wheelsFriction[i] = new WheelFrictionData();
+        }
+
+        for (int i = 0; i < _wheels.Length; i++)
+        {
+            InitWheelFriction(_wheels[i].wheelCollider, ref _wheelsFriction[i].wheelFriction, ref _wheelsFriction[i].wextremumSlip);
+        }
     }
 
     private void InitWheelFriction(WheelCollider collider, ref WheelFrictionCurve wheelFriction, ref float wheelFrictionExtremumSlip)
@@ -189,7 +188,7 @@ public class CarMovementManager
     {
         SmoothSteeringInput();
 
-        if (Mathf.Abs(frontLeftCollider.steerAngle) < 1f)
+        if (Mathf.Abs(_wheels[0].wheelCollider.steerAngle) < 1f)
         {
             _steeringAxis = 0f;
         }
@@ -212,8 +211,8 @@ public class CarMovementManager
 
     private void SetSteeringAngle(float steeringAngle)
     {
-        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, _carData.steeringSpeed);
-        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, _carData.steeringSpeed);
+        _wheels[0].wheelCollider.steerAngle = Mathf.Lerp(_wheels[0].wheelCollider.steerAngle, steeringAngle, _carData.steeringSpeed);
+        _wheels[1].wheelCollider.steerAngle = Mathf.Lerp(_wheels[1].wheelCollider.steerAngle, steeringAngle, _carData.steeringSpeed);
     }
 
     private void UpdateWheelPose(WheelCollider wheelCollider, GameObject wheelMesh)
@@ -285,17 +284,17 @@ public class CarMovementManager
 
     private void ThrottleChange(float torque)
     {
-        frontLeftCollider.motorTorque = torque;
-        frontRightCollider.motorTorque = torque;
-        rearLeftCollider.motorTorque = torque;
-        rearRightCollider.motorTorque = torque;
+        foreach (var wheel in _wheels)
+        {
+            wheel.wheelCollider.motorTorque = torque;
+        }
     }
     private void BrakeTorqueChange(float torque)
     {
-        frontLeftCollider.brakeTorque = torque;
-        frontRightCollider.brakeTorque = torque;
-        rearLeftCollider.brakeTorque = torque;
-        rearRightCollider.brakeTorque = torque;
+        foreach (var wheel in _wheels)
+        {
+            wheel.wheelCollider.brakeTorque = torque;
+        }
     }
 
     private void DecelerateCar()
@@ -328,10 +327,7 @@ public class CarMovementManager
     {
         _carRigidbody.velocity *= 1f / (1f + (0.025f * _carData.decelerationMultiplier));
 
-        frontLeftCollider.motorTorque = 0;
-        frontRightCollider.motorTorque = 0;
-        rearLeftCollider.motorTorque = 0;
-        rearRightCollider.motorTorque = 0;
+        ThrottleChange(0f);
     }
 
     private void StopCarIfSlow()
@@ -346,10 +342,7 @@ public class CarMovementManager
     // This function applies brake torque to the wheels according to the brake force given by the user.
     private void Brakes()
     {
-        frontLeftCollider.brakeTorque = _carData.brakeForce;
-        frontRightCollider.brakeTorque = _carData.brakeForce;
-        rearLeftCollider.brakeTorque = _carData.brakeForce;
-        rearRightCollider.brakeTorque = _carData.brakeForce;
+        BrakeTorqueChange(_carData.brakeForce);
     }
 
     // This function is used to make the car lose traction. By using this, the car will start drifting. The amount of traction lost
@@ -361,31 +354,25 @@ public class CarMovementManager
 
         _driftingAxis = Mathf.Min(1f, _driftingAxis + Time.deltaTime);
 
-        float secureStartingPoint = _driftingAxis * FLWextremumSlip * _carData.handbrakeDriftMultiplier;
+        float secureStartingPoint = _driftingAxis * _wheelsFriction[0].wextremumSlip * _carData.handbrakeDriftMultiplier;
 
-        if (secureStartingPoint < FLWextremumSlip)
+        if (secureStartingPoint < _wheelsFriction[0].wextremumSlip)
         {
-            _driftingAxis = FLWextremumSlip / (FLWextremumSlip * _carData.handbrakeDriftMultiplier);
+            _driftingAxis = _wheelsFriction[0].wextremumSlip / (_wheelsFriction[0].wextremumSlip * _carData.handbrakeDriftMultiplier);
         }
 
         _isDrifting = Mathf.Abs(_localVelocityX) > 2.5f;
 
         if (_driftingAxis < 1f)
         {
-            UpdateWheelFrictionForDrift(FLwheelFriction, FLWextremumSlip, frontLeftCollider);
-            UpdateWheelFrictionForDrift(FRwheelFriction, FRWextremumSlip, frontRightCollider);
-            UpdateWheelFrictionForDrift(RLwheelFriction, RLWextremumSlip, rearLeftCollider);
-            UpdateWheelFrictionForDrift(RRwheelFriction, RRWextremumSlip, rearRightCollider);
+            for(int i = 0; i < _wheels.Length; i++)
+            {
+                UpdateWheelFriction(_wheelsFriction[i].wheelFriction, _wheelsFriction[i].wextremumSlip, _wheels[i].wheelCollider);
+            }
         }
 
         _isTractionLocked = true;
         CarEvents.TireSkid(_isTractionLocked);
-    }
-
-    private void UpdateWheelFrictionForDrift(WheelFrictionCurve wheelFriction, float extremumSlip, WheelCollider wheelCollider)
-    {
-        wheelFriction.extremumSlip = extremumSlip * _carData.handbrakeDriftMultiplier * _driftingAxis;
-        wheelCollider.sidewaysFriction = wheelFriction;
     }
 
     // This function is used to recover the traction of the car when the user has stopped using the car's handbrake.
@@ -397,20 +384,19 @@ public class CarMovementManager
 
         if (_driftingAxis > 0f)
         {
-            UpdateWheelFriction(FLwheelFriction, FLWextremumSlip, frontLeftCollider);
-            UpdateWheelFriction(FRwheelFriction, FRWextremumSlip, frontRightCollider);
-            UpdateWheelFriction(RLwheelFriction, RLWextremumSlip, rearLeftCollider);
-            UpdateWheelFriction(RRwheelFriction, RRWextremumSlip, rearRightCollider);
+            for (int i = 0; i < _wheels.Length; i++)
+            {
+                UpdateWheelFriction(_wheelsFriction[i].wheelFriction, _wheelsFriction[i].wextremumSlip, _wheels[i].wheelCollider);
+            }
 
             _recoverTraction = CoroutineServices.instance.StartRoutine(RecoverTractionDelay(Time.deltaTime));
         }
         else
         {
-            ResetWheelFriction(frontLeftCollider, FLwheelFriction, FLWextremumSlip);
-            ResetWheelFriction(frontRightCollider, FRwheelFriction, FRWextremumSlip);
-            ResetWheelFriction(rearLeftCollider, RLwheelFriction, RLWextremumSlip);
-            ResetWheelFriction(rearRightCollider, RRwheelFriction, RRWextremumSlip);
-
+            for (int i = 0; i < _wheels.Length; i++)
+            {
+                ResetWheelFriction( _wheels[i].wheelCollider, _wheelsFriction[i].wheelFriction, _wheelsFriction[i].wextremumSlip);
+            }
             _driftingAxis = 0f;
         }
     }

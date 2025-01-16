@@ -2141,14 +2141,15 @@ MonoBehaviour:
   _carDataInitializer:
     _basicCarConfig: {fileID: 11400000, guid: 92fac4fbc0ea9be4aa5c03f46ce8aed4, type: 2}
   _carMovementManager:
-    frontLeftMesh: {fileID: 8649133033539593509}
-    frontLeftCollider: {fileID: 2239677825991946808}
-    frontRightMesh: {fileID: 3386343363124017378}
-    frontRightCollider: {fileID: 7877667525541545090}
-    rearLeftMesh: {fileID: 6204759406046827826}
-    rearLeftCollider: {fileID: 8615825632035397460}
-    rearRightMesh: {fileID: 2077481707217405491}
-    rearRightCollider: {fileID: 8706808775443715619}
+    _wheels:
+    - wheelMesh: {fileID: 8649133033539593509}
+      wheelCollider: {fileID: 2239677825991946808}
+    - wheelMesh: {fileID: 3386343363124017378}
+      wheelCollider: {fileID: 7877667525541545090}
+    - wheelMesh: {fileID: 6204759406046827826}
+      wheelCollider: {fileID: 8615825632035397460}
+    - wheelMesh: {fileID: 2077481707217405491}
+      wheelCollider: {fileID: 8706808775443715619}
     _carSpeed: 0
     _isDrifting: 0
     _isTractionLocked: 0
@@ -2168,7 +2169,6 @@ MonoBehaviour:
     decelerationMultiplier: 0
     handbrakeDriftMultiplier: 0
     bodyMassCenter: {x: 0, y: 0, z: 0}
-    useEffects: 0
     canHandbrake: 0
 --- !u!4 &5534550324703269849
 Transform:

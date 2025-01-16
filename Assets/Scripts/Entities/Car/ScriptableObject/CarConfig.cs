@@ -43,8 +43,6 @@ public class CarConfig : ScriptableObject
     [SerializeField] private Vector3 _bodyMassCenter; 
 
     [Space(20)]
-    [Header("Effects")]
-    [SerializeField] private bool _useEffects = false;
     [Header("Handbrake")]
     [SerializeField] private bool _canHandbrake = false;
 
@@ -58,6 +56,5 @@ public class CarConfig : ScriptableObject
     public int HandbrakeDriftMultiplier => _handbrakeDriftMultiplier;
     public Vector3 BodyMassCenter => _bodyMassCenter;
 
-    public bool UseEffects => _useEffects;
     public bool CanHandbrake => _canHandbrake;
 }
