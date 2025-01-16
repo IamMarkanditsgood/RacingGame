@@ -7,7 +7,7 @@ public class ResourcesManager : MonoBehaviour
 
     private Dictionary<ResourceTypes, int> _resources = new Dictionary<ResourceTypes, int>();
 
-    public void Awake()
+    public void Init()
     {
         if (Instance == null)
         {

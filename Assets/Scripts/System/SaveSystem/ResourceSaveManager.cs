@@ -5,8 +5,8 @@ public class ResourceSaveManager
 {
     private readonly Dictionary<ResourceTypes, string> ResourceKeys = new Dictionary<ResourceTypes, string>
         {
-            { ResourceTypes.Coins, ResourcesKeys.Coins },
-            { ResourceTypes.TotalPoints, ResourcesKeys.Hints },
+            { ResourceTypes.Coins, GameSaveKeys.Coins },
+            { ResourceTypes.TotalPoints, GameSaveKeys.TotalPoints },
         };
 
     public void SaveResource(ResourceTypes resource, int amount)
