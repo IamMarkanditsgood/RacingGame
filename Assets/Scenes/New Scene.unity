@@ -2152,7 +2152,6 @@ MonoBehaviour:
       wheelCollider: {fileID: 8706808775443715619}
     _carSpeed: 0
     _isDrifting: 0
-    _isTractionLocked: 0
   _carEffectManager:
     useEffects: 1
     RLWParticleSystem: {fileID: 593744207}
