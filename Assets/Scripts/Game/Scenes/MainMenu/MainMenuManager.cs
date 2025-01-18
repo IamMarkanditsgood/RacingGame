@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] private ResourcesManager _resourcesManager;
     [SerializeField] private CarDataManager _carDataManager;
 
-    private void Awake()
-    {  
+    private void Start()
+    {
         InitScene();
         Subscribe();
     }
@@ -30,5 +31,6 @@ public class MainMenuManager : MonoBehaviour
     {
         _resourcesManager.Init();
         _carDataManager.Init();
+        UIManager.Instance.ShowScreen(ScreenTypes.MainMenu);
     }
 }

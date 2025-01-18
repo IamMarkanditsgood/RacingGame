@@ -1,8 +1,8 @@
 public enum PopupTypes 
 {
-    Achieve,
-    SkillBuy,
-    Lose,
-    Win,
-    Pause,
+    IAPCoins,
+    Settings,
+    WinGame,
+    Lobby,
+    Levels,
 }

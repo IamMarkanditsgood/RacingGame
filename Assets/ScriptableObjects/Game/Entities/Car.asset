@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Car
   m_EditorClassIdentifier: 
   _carType: 0
-  _carMaterial: {fileID: 0}
+  _carMaterial: {fileID: 2100000, guid: 07f44fe3e9c462146a7769b976c50ec4, type: 2}
   _maxSpeed: 120
   _maxReverseSpeed: 45
   _accelerationMultiplier: 6
@@ -21,6 +21,6 @@ MonoBehaviour:
   _brakeForce: 450
   _decelerationMultiplier: 2
   _handbrakeDriftMultiplier: 5
-  _steeringSpeed: 0.5
+  _steeringSpeed: 0.4
   _bodyMassCenter: {x: 0, y: 0, z: 0}
   _canHandbrake: 0

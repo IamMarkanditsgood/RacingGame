@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public class CarDataManager
+public class CarDataManager : MonoBehaviour
 {
     [SerializeField] private CarConfig _carConfig;
-    [SerializeField] private CarData _carData;
+
+    [SerializeField] private CarData _carData = new CarData();
 
     public CarData CarData => _carData;
 
@@ -29,6 +29,7 @@ public class CarDataManager
             SetData();
             SaveManager.JsonStorage.SaveToJson(GameSaveKeys.CarData, _carData);
         }
+        
     }
     private void SetData()
     {
@@ -41,7 +42,7 @@ public class CarDataManager
         _carData.steeringSpeed = _carConfig.SteeringSpeed;
         _carData.brakeForce = _carConfig.BrakeForce;
         _carData.decelerationMultiplier = _carConfig.DecelerationMultiplier;
-        _carData.handbrakeDriftMultiplier = _carConfig.HandbrakeDriftMultiplier;
+        _carData.handBrakeDriftMultiplier = _carConfig.HandbrakeDriftMultiplier;
         _carData.bodyMassCenter = _carConfig.BodyMassCenter;
         _carData.canHandbrake = _carConfig.CanHandbrake;
     }
@@ -60,7 +61,7 @@ public class CarDataManager
             case CarParameters.CarType:
                 carParametersModifier.CarType(ref _carData, value);
                 break;
-            case CarParameters.WheelsColor:
+            case CarParameters.CarColor:
                 carParametersModifier.CarMaterial(ref _carData, value);
                 break;
             case CarParameters.MaxSpeed:
@@ -94,5 +95,6 @@ public class CarDataManager
                 carParametersModifier.CanHandbrake(ref _carData, value);
                 break;
         }
+        SaveManager.JsonStorage.SaveToJson(GameSaveKeys.CarData, _carData);
     }
 }

@@ -57,11 +57,11 @@ public class HandbrakeManager
 
         _driftingAxis = Mathf.Min(1f, _driftingAxis + Time.deltaTime);
 
-        float secureStartingPoint = _driftingAxis * _wheelsFriction[0].wextremumSlip * _carData.handbrakeDriftMultiplier;
+        float secureStartingPoint = _driftingAxis * _wheelsFriction[0].wextremumSlip * _carData.handBrakeDriftMultiplier;
 
         if (secureStartingPoint < _wheelsFriction[0].wextremumSlip)
         {
-            _driftingAxis = _wheelsFriction[0].wextremumSlip / (_wheelsFriction[0].wextremumSlip * _carData.handbrakeDriftMultiplier);
+            _driftingAxis = _wheelsFriction[0].wextremumSlip / (_wheelsFriction[0].wextremumSlip * _carData.handBrakeDriftMultiplier);
         }
 
         OnDrift?.Invoke();
@@ -81,7 +81,7 @@ public class HandbrakeManager
     // This function is used to recover the traction of the car when the user has stopped using the car's handbrake.
     private void UpdateWheelFriction(WheelFrictionCurve wheelFriction, float extremumSlip, WheelCollider wheelCollider)
     {
-        wheelFriction.extremumSlip = extremumSlip * _carData.handbrakeDriftMultiplier * _driftingAxis;
+        wheelFriction.extremumSlip = extremumSlip * _carData.handBrakeDriftMultiplier * _driftingAxis;
         wheelCollider.sidewaysFriction = wheelFriction;
     }
 

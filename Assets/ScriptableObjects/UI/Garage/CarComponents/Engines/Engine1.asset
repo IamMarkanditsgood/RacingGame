@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7298c0a5b90c7cf40b9cdd960868c35c, type: 3}
+  m_Name: Engine1
+  m_EditorClassIdentifier: 
+  _name: Engine1
+  _price: 0
+  _componentImage: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  _carIntParameters: 02000000030000000400000008000000
+  _intValue: 5a0000001e0000000200000002000000

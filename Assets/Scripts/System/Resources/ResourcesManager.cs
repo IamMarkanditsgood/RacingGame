@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourcesManager : MonoBehaviour
 {
     public static ResourcesManager Instance { get; private set; }
+
+    public event Action<ResourceTypes, int> OnResourceModified;
 
     private Dictionary<ResourceTypes, int> _resources = new Dictionary<ResourceTypes, int>();
 
@@ -26,6 +29,8 @@ public class ResourcesManager : MonoBehaviour
     {
         _resources[resource] += updateAmount;
         SaveManager.Resources.SaveResource(resource, _resources[resource]);
+
+        OnResourceModified?.Invoke(resource, _resources[resource]);
     }
 
     public bool IsEnoughResource(ResourceTypes resource, int price)

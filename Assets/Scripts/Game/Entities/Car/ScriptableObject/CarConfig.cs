@@ -39,7 +39,7 @@ public class CarConfig : ScriptableObject
 
     [Header("How much grip the car loses when the user hit the handbrake.")]
     [Range(1, 10)]
-    [SerializeField] private int _handbrakeDriftMultiplier = 5;
+    [SerializeField] private int _handBrakeDriftMultiplier = 5;
 
     [Header("How fast the steering wheel turns.")]
     [Range(0.1f, 1f)]
@@ -59,7 +59,7 @@ public class CarConfig : ScriptableObject
     public int MaxSteeringAngle => _maxSteeringAngle;
     public int BrakeForce => _brakeForce;
     public int DecelerationMultiplier => _decelerationMultiplier;
-    public int HandbrakeDriftMultiplier => _handbrakeDriftMultiplier;
+    public int HandbrakeDriftMultiplier => _handBrakeDriftMultiplier;
     public float SteeringSpeed => _steeringSpeed;
     public Vector3 BodyMassCenter => _bodyMassCenter;
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DriftManager
 {
-    private float _score;
+    private int _score;
     private Coroutine _driftScoreCalculator;
 
     private const float _scoreDelay = 0.01f;
@@ -33,10 +33,10 @@ public class DriftManager
 
             CoroutineServices.instance.StopRoutine(_driftScoreCalculator);
 
-            ResourcesManager.Instance.ModifyResource(ResourceTypes.TotalPoints, (int)_score);
+            ResourcesManager.Instance.ModifyResource(ResourceTypes.TotalPoints, _score);
             GameEvents.PointsUpdate(_score);
 
-            _score = 0f;
+            _score = 0;
             GameEvents.DriftScoreUpdate(_score, false);
         }
     }

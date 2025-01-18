@@ -12,7 +12,7 @@ public class CarData
     public int maxSteeringAngle;
     public int brakeForce;
     public int decelerationMultiplier;
-    public int handbrakeDriftMultiplier;
+    public int handBrakeDriftMultiplier;
     public float steeringSpeed;
     public Vector3 bodyMassCenter;
     public bool canHandbrake;

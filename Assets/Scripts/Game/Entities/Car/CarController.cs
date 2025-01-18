@@ -2,13 +2,11 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    [SerializeField] private CarDataInitializer _carDataInitializer;
+    [SerializeField] private CarDataManager _carDataManager;
     [SerializeField] private CarMovementManager _carMovementManager;
     [SerializeField] private CarEffectManager _carEffectManager;
 
     private CarInputSystem _carInputSystem = new CarInputSystem();
-
-    private CarData _carData;
 
     private void Start()
     {
@@ -38,9 +36,15 @@ public class CarController : MonoBehaviour
 
     public void Init()
     {
-        _carDataInitializer.InitData(ref _carData);
+        _carDataManager.Init();
         _carInputSystem.Init();
-        _carMovementManager.Init(_carData, gameObject);
+        _carMovementManager.Init(_carDataManager.CarData, gameObject);
+
+        if (GetComponent<CarVisualCustomizer>())
+        {
+            CarVisualCustomizer carVisualCustomizer = GetComponent<CarVisualCustomizer>();
+            carVisualCustomizer.Init();
+        }
     }
 
     private void Subscribe()

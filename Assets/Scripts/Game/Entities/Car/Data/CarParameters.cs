@@ -1,7 +1,7 @@
 public enum CarParameters 
 {
     CarType,
-    WheelsColor,
+    CarColor,
     MaxSpeed,
     MaxReverseSpeed,
     AccelerationMultiplier,

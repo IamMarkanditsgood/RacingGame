@@ -6,6 +6,7 @@ public class GameScreen : BasicScreen
     [SerializeField] private TMP_Text _driftScoreText;
     [SerializeField] private TMP_Text _pointsText;
     [SerializeField] private TMP_Text _speedText;
+    [SerializeField] private TMP_Text _timerText;
 
     private int points;
 
@@ -22,6 +23,7 @@ public class GameScreen : BasicScreen
 
     public override void ResetScreen()
     {
+        _timerText.text = "00:00";
         _pointsText.text = "0";
         _speedText.text = "0";
         _driftScoreText.text = "0";
@@ -35,6 +37,7 @@ public class GameScreen : BasicScreen
 
     private void Subscribe()
     {
+        GameEvents.OnTimerUpdate += UpdateTimer;
         GameEvents.OnDriftScoreeUpdate += UpdateDriftScore;
         GameEvents.OnSpeedUpdate += UpdateCarSpeed;
         GameEvents.OnPointsUpdate += UpdatePoints;
@@ -42,9 +45,17 @@ public class GameScreen : BasicScreen
 
     private void UnSubscribe()
     {
+        GameEvents.OnTimerUpdate -= UpdateTimer;
         GameEvents.OnDriftScoreeUpdate -= UpdateDriftScore;
         GameEvents.OnSpeedUpdate -= UpdateCarSpeed;
         GameEvents.OnPointsUpdate -= UpdatePoints;
+    }
+    private void UpdateTimer(float seconds)
+    {
+        int minutes = Mathf.FloorToInt(seconds / 60);
+        int secs = Mathf.FloorToInt(seconds % 60);
+
+        _timerText.text = $"{minutes:D2}:{secs:D2}";
     }
 
     private void UpdateDriftScore(float score, bool state)
@@ -60,11 +71,11 @@ public class GameScreen : BasicScreen
         string speedText = Mathf.RoundToInt(absoluteCarSpeed).ToString();
         _speedText.text = "Speed: " + speedText;
     }
-    private void UpdatePoints(float amount)
+    private void UpdatePoints(int amount)
     {
         TextManager textManager = new TextManager();
 
-        points += (int)amount;
+        points += amount;
         textManager.SetText(points, _pointsText, true);
     }
 }

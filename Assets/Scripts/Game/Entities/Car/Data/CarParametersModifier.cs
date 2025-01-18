@@ -37,7 +37,7 @@ public class CarParametersModifier
     }
     public void HandbrakeDriftMultiplier(ref CarData carData, object value)
     {
-        carData.handbrakeDriftMultiplier = (int)value;
+        carData.handBrakeDriftMultiplier = (int)value;
     }
     public void SteeringSpeed(ref CarData carData, object value)
     {

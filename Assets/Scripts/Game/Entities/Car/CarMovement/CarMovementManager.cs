@@ -160,14 +160,23 @@ public partial class CarMovementManager
 
     private void SpaceAction(int state)
     {
-        if (state == 1)
+        if (!_carData.canHandbrake)
+            return;
+
+        switch (state)
         {
-            _deceleratingCar = true;
-            _handbrakeManager.HandbrakeActivate();
-        }
-        else if (state == 0)
-        {
-            _handbrakeManager.RecoverTraction();
+            case 1:
+                _deceleratingCar = true;
+                _handbrakeManager.HandbrakeActivate();
+                break;
+
+            case 0:
+                _handbrakeManager.RecoverTraction();
+                break;
+
+            default:
+                Debug.LogWarning($"Unexpected state: {state}");
+                break;
         }
     }
 
