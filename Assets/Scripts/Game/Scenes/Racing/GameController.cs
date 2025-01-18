@@ -1,4 +1,5 @@
 using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -6,19 +7,17 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameSceneConfig _levelConfig;
     [SerializeField] private ResourcesManager _resourcesManager;
     [SerializeField] private SceneCollector _sceneCollector;
+    [SerializeField] private GameTimerManager _gameTimerManager; // Додаємо GameTimerManager
 
     private DriftManager _driftManager = new DriftManager();
-
-    private Coroutine _levelTimer;
     private int _points;
-
-    private const float _second = 1f;
 
     private void Awake()
     {
         Init();
         Subscribe();
     }
+
     private void Start()
     {
         StartGame();
@@ -31,6 +30,7 @@ public class GameController : MonoBehaviour
 
     private void Subscribe()
     {
+        GameEvents.OnGameFinish += FinishGame;
         GameEvents.OnPointsUpdate += UpdatePoints;
 
         _driftManager.Subscribe();
@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour
 
     private void UnSubscribe()
     {
+        GameEvents.OnGameFinish -= FinishGame;
         GameEvents.OnPointsUpdate -= UpdatePoints;
 
         _driftManager.UnSubscribe();
@@ -47,19 +48,22 @@ public class GameController : MonoBehaviour
     {
         _resourcesManager.Init();
     }
+
     private void StartGame()
     {
         _sceneCollector.CollectScene(_levelConfig);
         Time.timeScale = 1;
-        _levelTimer = StartCoroutine(GameTimer(_levelConfig.levelTimer));
+
+        // Запускаємо таймер тільки якщо цей гравець є MasterClient
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _gameTimerManager.StartTimer(_levelConfig.levelTimer);
+        }
     }
 
     private void FinishGame()
     {
-        if (_levelTimer != null)
-        {
-            StopCoroutine(_levelTimer);
-        }
+        _gameTimerManager.StopAllCoroutines(); // Якщо потрібно зупинити корутини
         CalculateReward();
 
         CarEvents.Drift(false);
@@ -75,17 +79,5 @@ public class GameController : MonoBehaviour
     {
         ResourcesManager.Instance.ModifyResource(ResourceTypes.TotalPoints, _points);
         ResourcesManager.Instance.ModifyResource(ResourceTypes.Coins, _points);
-    }
-
-    private IEnumerator GameTimer(float _time)
-    {
-        float time = _time;
-        while (time > 0)
-        {
-            GameEvents.TimerUpdate(time);
-            yield return new WaitForSeconds(_second);
-            time -= _second;
-        }
-        FinishGame();
     }
 }

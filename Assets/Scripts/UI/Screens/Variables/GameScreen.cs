@@ -50,11 +50,11 @@ public class GameScreen : BasicScreen
         GameEvents.OnSpeedUpdate -= UpdateCarSpeed;
         GameEvents.OnPointsUpdate -= UpdatePoints;
     }
+
     private void UpdateTimer(float seconds)
     {
         int minutes = Mathf.FloorToInt(seconds / 60);
         int secs = Mathf.FloorToInt(seconds % 60);
-
         _timerText.text = $"{minutes:D2}:{secs:D2}";
     }
 
@@ -62,15 +62,16 @@ public class GameScreen : BasicScreen
     {
         float absoluteScore = Mathf.Abs(score);
         _driftScoreText.text = Mathf.RoundToInt(absoluteScore).ToString();
-
         _driftScoreText.gameObject.SetActive(state);
     }
+
     private void UpdateCarSpeed(float speed)
     {
         float absoluteCarSpeed = Mathf.Abs(speed);
         string speedText = Mathf.RoundToInt(absoluteCarSpeed).ToString();
         _speedText.text = "Speed: " + speedText;
     }
+
     private void UpdatePoints(int amount)
     {
         TextManager textManager = new TextManager();

@@ -57,7 +57,17 @@ public class SceneCollector
 
     private void SpawnCar(GameObject scene, GameObject carPrefab)
     {
-        var carSpawnPos = scene.GetComponent<TrackManager>()?.GetFreeSpawnPos();
+        Transform[] allChildren = scene.GetComponentsInChildren<Transform>();
+
+        Transform carSpawnPos = null;
+        foreach (Transform child in allChildren)
+        {
+            if (child.CompareTag("SpawnPos"))
+            {
+                carSpawnPos = child;
+                break;
+            }
+        }
         if (carSpawnPos == null)
         {
             Debug.LogError("No free spawn position found in the scene.");
@@ -65,6 +75,7 @@ public class SceneCollector
         }
         Debug.Log("carPrefab " + carPrefab);
         Car = PhotonNetwork.Instantiate(carPrefab.name, carSpawnPos.position, carSpawnPos.rotation);
+        UnityEngine.Object.Destroy(carSpawnPos.gameObject);
     }
 
     private void ConfigureVirtualCamera()
