@@ -18,7 +18,10 @@ public class CarVisualCustomizer : MonoBehaviour
     }
     private void Config()
     {
-        CustomizeMaterial(_carData.carMaterial);
+        if (_carData != null && _carData.carMaterial != null)
+        {
+            CustomizeMaterial(_carData.carMaterial);
+        }
     }
     private void Subscribe()
     {

@@ -97,8 +97,6 @@ public class CarShopManager
 
         _car = UnityEngine.Object.Instantiate(_cars[_currentCarIndex].carPrefab, _carSpawnPos.position, _carSpawnPos.rotation);
 
-        _car.GetComponent<CarController>().enabled = false;
-        _car.GetComponent<CarDataManager>().enabled = false;
         _car.GetComponent<CarVisualCustomizer>().Init();
     }
 
