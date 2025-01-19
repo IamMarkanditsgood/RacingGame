@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public abstract class BasicPopup : MonoBehaviour
+public abstract class BasicPopup : MonoBehaviourPunCallbacks
 {
     [SerializeField] private GameObject _view;
     [SerializeField] private PopupTypes _popupType;

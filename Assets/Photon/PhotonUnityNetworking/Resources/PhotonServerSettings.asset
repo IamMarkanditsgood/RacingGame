@@ -43,6 +43,10 @@ MonoBehaviour:
   - FinishGameOnAllClients
   - SyncMaterialAcrossNetwork
   - SyncMaterial
+  - SyncDriftEffect
+  - SyncTireSkid
+  - RPC_SyncDriftEffect
+  - RPC_SyncTireSkid
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

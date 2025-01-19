@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class WinPopup : BasicPopup
 {
+    [SerializeField] private GameObject _leavingLoader;
     [SerializeField] private Button _mainMenu;
     [SerializeField] private Button _getReward;
 
@@ -68,20 +69,44 @@ public class WinPopup : BasicPopup
 
     private void MainMenu()
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount > 1)
+        if (PhotonNetwork.NetworkClientState == ClientState.Joined)
         {
-            // Знайти іншого гравця, щоб передати роль
-            foreach (Player player in PhotonNetwork.PlayerList)
+            if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount > 1)
             {
-                if (!player.IsMasterClient)
+                foreach (Player player in PhotonNetwork.PlayerList)
                 {
-                    PhotonNetwork.SetMasterClient(player);
-                    break;
+                    if (!player.IsMasterClient)
+                    {
+                        PhotonNetwork.SetMasterClient(player);
+                        break;
+                    }
                 }
             }
+            else if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+                PhotonNetwork.CurrentRoom.IsVisible = false;
+            }
+            Time.timeScale = 1f;
+            PhotonNetwork.LeaveRoom();
+            _leavingLoader.SetActive(true);
         }
+        else
+        {
+            Debug.LogWarning("Cannot leave room. Client is in state: " + PhotonNetwork.NetworkClientState);
+        }
+    }
+    public override void OnLeftRoom()
+    {
+        Debug.Log("Successfully left the room. Loading MainMenu scene...");
         AddReward();
         SceneManager.LoadScene("MainMenu");
+    }
+
+    // Колбек: викликається, якщо права господаря кімнати передані іншому гравцеві
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        Debug.Log("MasterClient switched to: " + newMasterClient.NickName);
     }
     private void GetReward()
     {

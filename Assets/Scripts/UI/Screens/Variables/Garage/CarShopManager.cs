@@ -18,7 +18,7 @@ public class CarShopManager
     [Serializable]
     public class CarsCollection
     {
-        public CarTypes carType;
+        public CarTypes carType = CarTypes.CarBasic;
         public GameObject carPrefab;
         public int price;
         public bool isBought;
