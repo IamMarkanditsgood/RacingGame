@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 [CreateAssetMenu(fileName = "Engine", menuName = "ScriptableObjects/UI/Car/Engines", order = 1)]
 public class CarEngineComponent : BasicCarComponentConfig
 {

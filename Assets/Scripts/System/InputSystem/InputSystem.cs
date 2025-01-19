@@ -13,10 +13,12 @@ public class InputSystem
     {
         DeclareInputSystems();
     }
+
     public void Destroy()
     {
         _mobileInputSystem.Unsubscribe();
     }
+
     public void UpdateInputs()
     {
         foreach (var system in _inputSystems)
@@ -24,6 +26,7 @@ public class InputSystem
             system.UpdateInput();
         }
     }
+
     private void DeclareInputSystems()
     {
         _inputSystems.Add(new KeyboardInputSystem());

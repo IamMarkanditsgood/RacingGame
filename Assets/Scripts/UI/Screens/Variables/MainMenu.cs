@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +5,7 @@ using UnityEngine.UI;
 public class MainMenu : BasicScreen
 {
     [SerializeField] private TMP_Text _totalDriftPoints;
+
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _garageButton;
     [SerializeField] private Button _settingsButton;
@@ -37,6 +36,7 @@ public class MainMenu : BasicScreen
         _settingsButton.onClick.RemoveListener(Settings);
         _exitButton.onClick.RemoveListener(Exit);
     }
+
     public override void ResetScreen()
     {
     }
@@ -48,6 +48,7 @@ public class MainMenu : BasicScreen
         int points = ResourcesManager.Instance.GetResource(ResourceTypes.TotalPoints);
         textManager.SetText(points, _totalDriftPoints, true, "Total drift points:");
     }
+
     private void StartPressed()
     {
         UIManager.Instance.ShowPopup(PopupTypes.Lobby);

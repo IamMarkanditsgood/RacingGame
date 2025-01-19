@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +14,8 @@ public abstract class BasicComponentPanel : MonoBehaviour
     protected BasicCarComponentConfig _config;
     protected bool _isBought;
 
+    private TextManager _textManager = new TextManager();
+
     public bool IsBought { get { return _isBought; } set { _isBought = value; } }
 
     private void Start()
@@ -28,6 +28,16 @@ public abstract class BasicComponentPanel : MonoBehaviour
         UnSubscribe();
     }
 
+    public virtual void Subscribe()
+    {
+        _interactionButton.onClick.AddListener(InteractButtonPressed);
+    }
+
+    public virtual void UnSubscribe()
+    {
+        _interactionButton.onClick.RemoveListener(InteractButtonPressed);
+    }
+
     public virtual void Init(BasicCarComponentConfig config, CarCastomizedComponents carComponentType)
     {
         _config = config;
@@ -36,13 +46,14 @@ public abstract class BasicComponentPanel : MonoBehaviour
 
     public virtual void SetComponentPanel()
     {
-        _name.text = _config.Name;
-        _price.text = "Price: " + _config.Price;
-        _interactionButton.GetComponentInChildren<TMP_Text>().text = "Buy";
+        _textManager.SetText(_config.Name, _name);
+        _textManager.SetText(_config.Price, _price, false, "Price: ");
+        _textManager.SetText("Buy", _interactionButton.GetComponentInChildren<TMP_Text>());
+
         if (_isBought)
         {
-            _price.text = "Bought";
-            _interactionButton.GetComponentInChildren<TMP_Text>().text = "Use";
+            _textManager.SetText("Bought", _price);
+            _textManager.SetText("Use", _interactionButton.GetComponentInChildren<TMP_Text>());
         }
         if (_image != null)
         {
@@ -50,25 +61,14 @@ public abstract class BasicComponentPanel : MonoBehaviour
         }
     }
 
-    public virtual void Subscribe()
-    {
-        _interactionButton.onClick.AddListener(InteractButtonPressed);
-    }
-    public virtual void UnSubscribe()
-    {
-        _interactionButton.onClick.RemoveListener(InteractButtonPressed);
-    }
-
-    public abstract void InteractButtonPressed();
-
     protected virtual void SetParametersText<T>(List<CarParameters> parameters, List<T> values, TMP_Text parametersText)
     {
-        
         for (int i = 0; i < parameters.Count; i++)
         {
-            parametersText.text += parameters[i] + " = " + values[i] + "\n";
+            _textManager.SetText(values[i], parametersText, false, parameters[i].ToString(), "\n");
         }
     }
+
     protected virtual void ModifyParameters<T>(List<CarParameters> parameters, List<T> values)
     {
         for (int i = 0; i < parameters.Count; i++)
@@ -80,8 +80,10 @@ public abstract class BasicComponentPanel : MonoBehaviour
     public virtual void SaveBoughtCarComponent()
     {
         _isBought = true;
+
         List<string> savedComponents = new List<string>();
         savedComponents = SaveManager.PlayerPrefs.LoadStringList(_carComponentType.ToString());
+
         for (int i = 0; i < savedComponents.Count; i++)
         {
             if (savedComponents[i] == _config.name)
@@ -89,8 +91,10 @@ public abstract class BasicComponentPanel : MonoBehaviour
                 return;
             }
         }
+
         savedComponents.Add(_config.name);
         SaveManager.PlayerPrefs.SaveStringList(_carComponentType.ToString(), savedComponents);
     }
 
+    public abstract void InteractButtonPressed();
 }

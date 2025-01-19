@@ -8,7 +8,6 @@ public class Garage : BasicScreen
 {
     [SerializeField] private CarShopManager _carShopManager;
     [SerializeField] private CustomizerManager _customizerManager;
-
     [SerializeField] private CarDataManager _carDataManager;
 
     [SerializeField] private List<CastomizationButton> _customizationButtons;
@@ -29,26 +28,24 @@ public class Garage : BasicScreen
     private void Start()
     {
         Init();
-        Subscribe();
-        
+        Subscribe();  
     }
 
     private void OnDestroy()
     {
         UnSubscribe();
     }
+
     private void Init()
     {
         if(!SaveManager.PlayerPrefs.IsSaved(GarageSaveKeys.CurrentSelectedCar))
         {
             SaveManager.PlayerPrefs.SaveEnum(GarageSaveKeys.CurrentSelectedCar, _basicCar);
         }
-
     }
 
     private void Subscribe()
     {
-
         ResourcesManager.Instance.OnResourceModified += UpdateResource;
 
         for (int i = 0; i < _customizationButtons.Count; i++)
@@ -81,7 +78,7 @@ public class Garage : BasicScreen
     public override void ResetScreen()
     {
         _carShopManager.ResetCarShop();
-        _customizerManager.Reset();
+        _customizerManager.Reset();  
     }
 
     public override void SetScreen()

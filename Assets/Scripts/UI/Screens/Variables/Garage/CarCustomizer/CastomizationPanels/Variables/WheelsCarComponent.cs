@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class WheelsCarComponent : BasicComponentPanel
 {
     [SerializeField] private TMP_Text _parametersText;
+
     public override void SetComponentPanel()
     {
         base.SetComponentPanel();

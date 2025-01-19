@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class HandBrakeComponent : BasicComponentPanel
 {
     [SerializeField] private TMP_Text _parametersText;
+
     public override void SetComponentPanel()
     {
         base.SetComponentPanel();
@@ -20,7 +18,6 @@ public class HandBrakeComponent : BasicComponentPanel
         if (!_isBought && ResourcesManager.Instance.IsEnoughResource(ResourceTypes.Coins, _config.Price))
         {
             ResourcesManager.Instance.ModifyResource(ResourceTypes.Coins, -_config.Price);
-
             
             _interactionButton.GetComponentInChildren<TMP_Text>().text = "Use";
             SaveBoughtCarComponent();
@@ -28,7 +25,6 @@ public class HandBrakeComponent : BasicComponentPanel
         else
         {
             CarEvents.ModifyCarParameter(CarParameters.CanHandbrake, true);
-
         }
     }
 }

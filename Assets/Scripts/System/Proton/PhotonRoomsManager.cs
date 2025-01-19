@@ -1,21 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using Photon.Realtime;
 
 public class PhotonRoomsManager : MonoBehaviourPunCallbacks
 {
-    public void CreateRoom(LeveTypes level, CarTypes carType)
+    private const int _maxPlayers = 2;
+    public void CreateRoom(LevelTypes level, CarTypes carType)
     {
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 2;
+        roomOptions.MaxPlayers = _maxPlayers;
 
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
         {
             { "Level", level },
             { "CarType", carType }
         };
+
         roomOptions.CustomRoomProperties = roomProperties;
         roomOptions.CustomRoomPropertiesForLobby = new[] { "Level", "CarType" };
 

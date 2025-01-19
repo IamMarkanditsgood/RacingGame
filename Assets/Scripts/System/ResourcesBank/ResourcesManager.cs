@@ -45,7 +45,6 @@ public class ResourcesManager : MonoBehaviour
 
     private void InitResourceDictionary()
     {
-
         _resources[ResourceTypes.Coins] = SaveManager.Resources.LoadResource(ResourceTypes.Coins);
         _resources[ResourceTypes.TotalPoints] = SaveManager.Resources.LoadResource(ResourceTypes.TotalPoints);
     }

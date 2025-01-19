@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class MaterialDatabase
@@ -19,7 +17,7 @@ public static class MaterialDatabase
             if (materials[i] == material)
                 return i;
         }
-        return -1; // якщо матер≥ал не знайдено
+        return -1;
     }
 
     public static Material GetMaterial(int index)

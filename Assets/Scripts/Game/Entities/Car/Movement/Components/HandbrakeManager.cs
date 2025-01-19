@@ -6,11 +6,14 @@ public class HandbrakeManager
 {
     private Wheel[] _wheels;
     private WheelFrictionData[] _wheelsFriction = new WheelFrictionData[4];
+
     private CarData _carData;
 
     private bool _isTractionLocked;
     private float _driftingAxis;
+
     private Coroutine _recoverTraction;
+
     public event Action OnDrift;
 
     public void Init(CarData carData, Wheel[] wheels, WheelFrictionData[] wheelsFriction)
@@ -19,10 +22,12 @@ public class HandbrakeManager
         _wheels = wheels;
         _wheelsFriction = wheelsFriction;
     }
+
     public void HandbrakeActivate()
     {
         Handbrake();
     }
+
     public void RecoverTraction()
     {
         _isTractionLocked = false;
@@ -48,9 +53,6 @@ public class HandbrakeManager
         }
     }
 
-    // This function is used to make the car lose traction. By using this, the car will start drifting. The amount of traction lost
-    // will depend on the handbrakeDriftMultiplier variable. If this value is small, then the car will not drift too much, but if
-    // it is high, then you could make the car to feel like going on ice.
     private void Handbrake()
     {
         CoroutineServices.instance.StopRoutine(_recoverTraction);
@@ -78,7 +80,6 @@ public class HandbrakeManager
         CarEvents.TireSkid(_isTractionLocked);
     }
 
-    // This function is used to recover the traction of the car when the user has stopped using the car's handbrake.
     private void UpdateWheelFriction(WheelFrictionCurve wheelFriction, float extremumSlip, WheelCollider wheelCollider)
     {
         wheelFriction.extremumSlip = extremumSlip * _carData.handBrakeDriftMultiplier * _driftingAxis;

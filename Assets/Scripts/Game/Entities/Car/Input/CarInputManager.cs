@@ -19,6 +19,7 @@
         InputEvents.OnRPressed += RightPressed;
         InputEvents.OnHandBrakePressed += DriftPressed;
     }
+
     public void Unsubscribe()
     {
         InputEvents.OnFPressed -= ForwardPressed;
@@ -32,21 +33,24 @@
     {
         IsFPressed = state;
     }
+
     private void BackPressed(bool state)
     {
         IsBPressed = state;
     }
+
     private void LeftPressed(bool state)
     {
         IsLPressed = state;
     }
+
     private void RightPressed(bool state)
     {
         IsRPressed = state;
     }
+
     private void DriftPressed(bool state)
     {
         IsDPressed = state;
     }
-
 }

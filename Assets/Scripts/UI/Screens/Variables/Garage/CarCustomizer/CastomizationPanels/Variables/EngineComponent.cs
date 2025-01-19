@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class EngineComponent : BasicComponentPanel

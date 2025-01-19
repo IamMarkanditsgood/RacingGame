@@ -1,5 +1,6 @@
 using System;
 using Cinemachine;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using UnityEngine;
 
@@ -15,38 +16,56 @@ public class SceneCollector
 
     public void CollectScene(GameSceneConfig gameSceneConfig, InputSystem inputSystem)
     {
-        // Отримуємо рівень і тип машини з властивостей кімнати
         var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
 
-        if (!roomProperties.TryGetValue("Level", out object levelObj) ||
-            !roomProperties.TryGetValue("CarType", out object carTypeObj))
-        {
-            Debug.LogError("Failed to retrieve level or car type from room properties.");
+        if (!TryGetRoomProperties(roomProperties, out var level, out var carType))
             return;
-        }
 
-        var level = (LeveTypes)levelObj;
-        var carType = (CarTypes)carTypeObj;
-
-        var scenePrefab = gameSceneConfig.GetLevelPrefab(level);
-        var carPrefab = gameSceneConfig.GetCarPrefab(carType);
-
-        if (scenePrefab == null)
-        {
-            Debug.LogError($"Scene prefab for level {level} not found.");
+        if (!TryGetPrefabs(gameSceneConfig, level, carType, out var scenePrefab, out var carPrefab))
             return;
-        }
-
-        if (carPrefab == null)
-        {
-            Debug.LogError($"Car prefab for car type {carType} not found.");
-            return;
-        }
 
         Scene = InstantiateScene(scenePrefab);
         SpawnCar(Scene, carPrefab, inputSystem);
 
         ConfigureVirtualCamera();
+    }
+
+    private bool TryGetRoomProperties(Hashtable roomProperties, out LevelTypes level, out CarTypes carType)
+    {
+        level = default;
+        carType = default;
+
+        if (!roomProperties.TryGetValue("Level", out object levelObj) ||
+            !roomProperties.TryGetValue("CarType", out object carTypeObj))
+        {
+            Debug.LogError("Failed to retrieve level or car type from room properties.");
+            return false;
+        }
+
+        level = (LevelTypes)levelObj;
+        carType = (CarTypes)carTypeObj;
+        return true;
+    }
+
+    private bool TryGetPrefabs(GameSceneConfig gameSceneConfig, LevelTypes level, CarTypes carType,
+                           out GameObject scenePrefab, out GameObject carPrefab)
+    {
+        scenePrefab = gameSceneConfig.GetLevelPrefab(level);
+        carPrefab = gameSceneConfig.GetCarPrefab(carType);
+
+        if (scenePrefab == null)
+        {
+            Debug.LogError($"Scene prefab for level {level} not found.");
+            return false;
+        }
+
+        if (carPrefab == null)
+        {
+            Debug.LogError($"Car prefab for car type {carType} not found.");
+            return false;
+        }
+
+        return true;
     }
 
     private GameObject InstantiateScene(GameObject scenePrefab)

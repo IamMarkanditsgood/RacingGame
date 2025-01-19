@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -20,7 +18,7 @@ public class GameSceneConfig : ScriptableObject
     [Serializable]
     public class LevelPrefabs
     {
-        public LeveTypes levelType;
+        public LevelTypes levelType;
         public GameObject levelPrefab;
     }
 
@@ -30,7 +28,8 @@ public class GameSceneConfig : ScriptableObject
     {
         return _carPrefabs.FirstOrDefault(carPrefab => carPrefab.carType == carType)?.carPrefab;
     }
-    public GameObject GetLevelPrefab(LeveTypes levelType)
+
+    public GameObject GetLevelPrefab(LevelTypes levelType)
     {
         return _levelPrefabs.FirstOrDefault(levelPrefab => levelPrefab.levelType == levelType)?.levelPrefab;
     }

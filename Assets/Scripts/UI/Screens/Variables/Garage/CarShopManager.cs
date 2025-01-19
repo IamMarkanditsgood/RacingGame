@@ -7,13 +7,18 @@ using UnityEngine.UI;
 [Serializable]
 public class CarShopManager
 {
-    private GameObject _car;
     [SerializeField] private Transform _carSpawnPos;
     [SerializeField] private Button _interactButton;
     [SerializeField] private Button _nextButton;
     [SerializeField] private Button _prevButton;
     [SerializeField] private TMP_Text _carPriceText;
     [SerializeField] private CarsCollection[] _cars;
+
+    private List<CarTypes> _boughtCars = new List<CarTypes>();
+    private CarsCollection _currentSelectedCar;
+
+    private GameObject _carOnScene;
+    private int _currentCarIndex;
 
     [Serializable]
     public class CarsCollection
@@ -23,10 +28,6 @@ public class CarShopManager
         public int price;
         public bool isBought;
     }
-
-    private List<CarTypes> _boughtCars = new List<CarTypes>();
-    private CarsCollection _currentSelectedCar;
-    private int _currentCarIndex;
 
     public void Subscribe()
     {
@@ -48,28 +49,32 @@ public class CarShopManager
             _car.isBought = false;
         }
 
-        if (_car != null)
+        if (_carOnScene != null)
         {
-            UnityEngine.Object.Destroy(_car);
+            UnityEngine.Object.Destroy(_carOnScene);
         }
 
         _nextButton.interactable = true;
         _prevButton.interactable = false;
         _interactButton.interactable = true;
         _currentCarIndex = 0;
-
     }
 
     public void ConfigureCarShop(Material carMaterial)
     {
-
         _currentSelectedCar = _cars[_currentCarIndex];
 
+        SetBoughtCars();
+        SetCurrentPage();
+    }
+
+    private void SetBoughtCars()
+    {
         List<CarTypes> boughtCars = LoadBoughtCars();
 
-        for(int i = 0; i < _cars.Length; i++)
+        for (int i = 0; i < _cars.Length; i++)
         {
-            for(int j = 0; j < boughtCars.Count; j++)
+            for (int j = 0; j < boughtCars.Count; j++)
             {
                 if (_cars[i].carType == boughtCars[j])
                 {
@@ -77,8 +82,6 @@ public class CarShopManager
                 }
             }
         }
-
-        SetCurrentPage();
     }
 
     private void SetCurrentPage()
@@ -90,14 +93,14 @@ public class CarShopManager
 
     private void SetCarModel()
     {
-        if (_car != null)
+        if (_carOnScene != null)
         {
-            UnityEngine.Object.Destroy(_car);
+            UnityEngine.Object.Destroy(_carOnScene);
         }
 
-        _car = UnityEngine.Object.Instantiate(_cars[_currentCarIndex].carPrefab, _carSpawnPos.position, _carSpawnPos.rotation);
+        _carOnScene = UnityEngine.Object.Instantiate(_cars[_currentCarIndex].carPrefab, _carSpawnPos.position, _carSpawnPos.rotation);
 
-        _car.GetComponent<CarVisualCustomizer>().Init();
+        _carOnScene.GetComponent<CarVisualCustomizer>().Init();
     }
 
     private void SetButtons()
@@ -159,6 +162,7 @@ public class CarShopManager
             _nextButton.interactable = false;
         }
     }
+
     private void PreviousCar()
     {
         _nextButton.interactable = true;
@@ -172,27 +176,39 @@ public class CarShopManager
             _prevButton.interactable = false;
         }
     }
+
     private void InteractButton()
     {
         if (_currentSelectedCar.isBought)
         {
-            SaveManager.PlayerPrefs.SaveEnum(GarageSaveKeys.CurrentSelectedCar, _currentSelectedCar.carType);
-            CarEvents.ModifyCarParameter(CarParameters.CarType, _currentSelectedCar.carType);
-            _interactButton.interactable = false;
+            SetCar();
         }
         else
         {
-            if(ResourcesManager.Instance.IsEnoughResource(ResourceTypes.Coins, _currentSelectedCar.price))
-            {
-                ResourcesManager.Instance.ModifyResource(ResourceTypes.Coins, -_currentSelectedCar.price);
+            TryToBuy();
+        }
+    }
 
-                _currentSelectedCar.isBought = true;
+    private void SetCar()
+    {
+        SaveManager.PlayerPrefs.SaveEnum(GarageSaveKeys.CurrentSelectedCar, _currentSelectedCar.carType);
+        CarEvents.ModifyCarParameter(CarParameters.CarType, _currentSelectedCar.carType);
 
-                _boughtCars.Add(_currentSelectedCar.carType);
-                SaveManager.PlayerPrefs.SaveEnumList(GarageSaveKeys.BoughtCars,_boughtCars);
+        _interactButton.interactable = false;
+    }
 
-                SetPageText();
-            }
+    private void TryToBuy()
+    {
+        if (ResourcesManager.Instance.IsEnoughResource(ResourceTypes.Coins, _currentSelectedCar.price))
+        {
+            ResourcesManager.Instance.ModifyResource(ResourceTypes.Coins, -_currentSelectedCar.price);
+
+            _currentSelectedCar.isBought = true;
+
+            _boughtCars.Add(_currentSelectedCar.carType);
+            SaveManager.PlayerPrefs.SaveEnumList(GarageSaveKeys.BoughtCars, _boughtCars);
+
+            SetPageText();
         }
     }
 }

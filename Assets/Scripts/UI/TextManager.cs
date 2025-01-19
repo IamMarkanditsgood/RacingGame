@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class TextManager
@@ -9,31 +8,27 @@ public class TextManager
         string formattedText = GetFormattedText(message, formatKNumber);
         textRow.text = frontAddedMessage + formattedText + endAddedMessage; 
     }
+
     public void SetTimerText(TMP_Text textRow, float seconds, bool showHoursAndMinutes = false, string frontAddedMessage = "", string endAddedMessage = "")
     {
-        string formattedText;
+        textRow.text = $"{frontAddedMessage}{FormatTime(seconds, showHoursAndMinutes)}{endAddedMessage}";
+    }
 
+    private string FormatTime(float seconds, bool showHoursAndMinutes)
+    {
         if (showHoursAndMinutes)
         {
             int hours = Mathf.FloorToInt(seconds / 3600);
             int minutes = Mathf.FloorToInt((seconds % 3600) / 60);
             int secs = Mathf.FloorToInt(seconds % 60);
 
-            if (hours > 0)
-            {
-                formattedText = $"{hours:D2}:{minutes:D2}:{secs:D2}";
-            }
-            else
-            {
-                formattedText = $"{minutes:D2}:{secs:D2}";
-            }
+            return hours > 0
+                ? $"{hours:D2}:{minutes:D2}:{secs:D2}"
+                : $"{minutes:D2}:{secs:D2}";
         }
-        else
-        {
-            int secs = Mathf.FloorToInt(seconds);
-            formattedText = $"{secs}";
-        }
-        textRow.text = frontAddedMessage + formattedText + endAddedMessage;
+
+        int secsOnly = Mathf.FloorToInt(seconds);
+        return $"{secsOnly}";
     }
 
     private string GetFormattedText(object message, bool formatKNumber =false)

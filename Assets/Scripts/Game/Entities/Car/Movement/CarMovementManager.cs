@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Buffers;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -16,6 +14,7 @@ public partial class CarMovementManager
     private Rigidbody _carRigidbody;
 
     private bool _deceleratingCar;
+
     private float _localVelocityZ;
     private float _localVelocityX;
 
@@ -27,12 +26,13 @@ public partial class CarMovementManager
 
     public void Subscribe()
     {
-        _engineManager.OnDrift += HandleDriftEffect;
+        _engineManager.OnDriftCheckin += HandleDriftEffect;
         _handbrakeManager.OnDrift += HandleDriftEffect;
     }
+
     public void Unsubscribe()
     {
-        _engineManager.OnDrift -= HandleDriftEffect;
+        _engineManager.OnDriftCheckin -= HandleDriftEffect;
         _handbrakeManager.OnDrift -= HandleDriftEffect;
     }
 

@@ -67,6 +67,7 @@ public class CarController : MonoBehaviour
     {
         _inputSystem = inputSystem;
     }
+
     private void Configure()
     {
         _carDataManager.Init();
@@ -84,7 +85,6 @@ public class CarController : MonoBehaviour
     {
         _carMovementManager.Subscribe();
         _carEffectManager.Subscribe();
-
         _carInputManager.Subscribe();
     }
 
@@ -92,7 +92,6 @@ public class CarController : MonoBehaviour
     {
         _carMovementManager.Unsubscribe();
         _carEffectManager.UnSubscribe();
-
         _carInputManager.Unsubscribe();
     }
 

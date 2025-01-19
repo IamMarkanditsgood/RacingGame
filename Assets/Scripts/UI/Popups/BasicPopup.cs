@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,7 +24,7 @@ public abstract class BasicPopup : MonoBehaviourPunCallbacks
     {
         if(_closeButton != null)
         {
-            _closeButton.onClick.AddListener(Close);
+            _closeButton.onClick.AddListener(ClosePressed);
         }
     }
 
@@ -43,12 +41,14 @@ public abstract class BasicPopup : MonoBehaviourPunCallbacks
         SetPopup();
         _view.SetActive(true);
     }
+
     public virtual void Hide()
     {
         ResetPopup();
         _view.SetActive(false);
     }
-    public virtual void Close()
+
+    public virtual void ClosePressed()
     {
         Hide();
     }

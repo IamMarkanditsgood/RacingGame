@@ -23,8 +23,6 @@ public class SteeringManager
         TurnSteering(1f);
     }
 
-    //The following method takes the front car wheels to their default position (rotation = 0). The speed of this movement will depend
-    // on the steeringSpeed variable.
     public void ResetSteeringAngle()
     {
         SmoothSteeringInput();

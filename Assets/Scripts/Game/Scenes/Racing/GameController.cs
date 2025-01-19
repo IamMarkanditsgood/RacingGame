@@ -1,4 +1,3 @@
-using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 
@@ -7,10 +6,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameSceneConfig _levelConfig;
     [SerializeField] private ResourcesManager _resourcesManager;
     [SerializeField] private SceneCollector _sceneCollector;
-    [SerializeField] private GameTimerManager _gameTimerManager; // Додаємо GameTimerManager
+    [SerializeField] private GameTimerManager _gameTimerManager; 
     [SerializeField] private InputSystem _inputSystem;
 
     private DriftManager _driftManager = new DriftManager();
+
     private int _points;
 
     private void Awake()
@@ -55,7 +55,6 @@ public class GameController : MonoBehaviour
         _sceneCollector.CollectScene(_levelConfig, _inputSystem);
         Time.timeScale = 1;
 
-        // Запускаємо таймер тільки якщо цей гравець є MasterClient
         if (PhotonNetwork.IsMasterClient)
         {
             _gameTimerManager.StartTimer(_levelConfig.levelTimer);
@@ -64,8 +63,10 @@ public class GameController : MonoBehaviour
 
     private void FinishGame()
     {
-        _gameTimerManager.StopAllCoroutines(); // Якщо потрібно зупинити корутини     
+        _gameTimerManager.StopAllCoroutines();    
+        
         UIManager.Instance.ShowPopup(PopupTypes.WinGame);
+
         WinPopup winPopup = (WinPopup) UIManager.Instance.GetPopup(PopupTypes.WinGame);
         int points = _points + _driftManager.Score;
         winPopup.Init(points);
@@ -78,5 +79,4 @@ public class GameController : MonoBehaviour
     {
         _points += amount;
     }
-
 }

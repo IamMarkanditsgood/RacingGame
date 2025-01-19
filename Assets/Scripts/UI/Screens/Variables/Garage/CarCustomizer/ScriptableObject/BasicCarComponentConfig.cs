@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BasicCarComponent", menuName = "ScriptableObjects/UI/Car/CarComponent", order = 1)]
@@ -11,5 +10,4 @@ public class BasicCarComponentConfig : ScriptableObject
     public string Name => _name;
     public int Price => _price;
     public Sprite ComponentImage => _componentImage;
-
 }

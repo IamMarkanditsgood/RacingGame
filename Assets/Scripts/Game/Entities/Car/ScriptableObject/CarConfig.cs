@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BasicCar", menuName = "ScriptableObjects/Car/BasicCar", order = 1)]
@@ -62,6 +60,5 @@ public class CarConfig : ScriptableObject
     public int HandbrakeDriftMultiplier => _handBrakeDriftMultiplier;
     public float SteeringSpeed => _steeringSpeed;
     public Vector3 BodyMassCenter => _bodyMassCenter;
-
     public bool CanHandbrake => _canHandbrake;
 }

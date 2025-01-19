@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -42,21 +40,29 @@ public class MobileInputSystem : IInputable
         RemovePointerEvents(_rightButton);
         RemovePointerEvents(_handBrakeButton);
     }
+
     private void AddPointerEvents(Button button, Action<bool> action)
     {
         EventTrigger trigger = button.gameObject.GetComponent<EventTrigger>();
         if (trigger == null)
             trigger = button.gameObject.AddComponent<EventTrigger>();
 
-        // Подія натискання
+        ClickEvent(ref trigger, action);
+        ReleaseEvent(ref trigger, action);
+    }
+
+    private void ClickEvent(ref EventTrigger trigger, Action<bool> action)
+    {
         EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry
         {
             eventID = EventTriggerType.PointerDown
         };
         pointerDownEntry.callback.AddListener((data) => action.Invoke(true));
         trigger.triggers.Add(pointerDownEntry);
+    }
 
-        // Подія відпускання
+    private void ReleaseEvent(ref EventTrigger trigger, Action<bool> action)
+    {
         EventTrigger.Entry pointerUpEntry = new EventTrigger.Entry
         {
             eventID = EventTriggerType.PointerUp
@@ -73,22 +79,27 @@ public class MobileInputSystem : IInputable
             trigger.triggers.Clear();
         }
     }
+
     private void ForwardPressed( bool state)
     {
         InputEvents.InvokeForward(state);
     }
+
     private void BackPressed(bool state)
     {
         InputEvents.InvokeBack(state);
     }
+
     private void LeftPressed(bool state)
     {
         InputEvents.InvokeLeft(state);
     }
+
     private void RightPressed(bool state)
     {
         InputEvents.InvokeRight(state);
     }
+
     private void HandBrakePressed(bool state)
     {
         InputEvents.InvokeHandBrake(state);

@@ -27,7 +27,6 @@ public class GameScreen : BasicScreen
 
     public override void ResetScreen()
     {
-
         textManager.SetText("00:00", _timerText);
         textManager.SetText("0", _pointsText);
         textManager.SetText("0", _speedText);
@@ -71,7 +70,6 @@ public class GameScreen : BasicScreen
 
     private void UpdateTimer(float seconds)
     {
-
         textManager.SetTimerText(_timerText, seconds, true);
     }
 
@@ -89,14 +87,11 @@ public class GameScreen : BasicScreen
         float absoluteCarSpeed = Mathf.Abs(speed);
         string speedText = Mathf.RoundToInt(absoluteCarSpeed).ToString();
 
-        
         textManager.SetText(speedText, _speedText, false, "Speed: ");
     }
 
     private void UpdatePoints(int amount)
     {
-     
-
         points += amount;
         textManager.SetText(points, _pointsText, true);
     }

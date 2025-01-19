@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.UI;
-
 public class IAPCoinBuy : BasicPopup
 {
     public override void ResetPopup()
@@ -10,5 +7,4 @@ public class IAPCoinBuy : BasicPopup
     public override void SetPopup()
     {
     }
-
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 public class DriftManager
 {
     private int _score;
+    private bool _isInDrift;
+
     private Coroutine _driftScoreCalculator;
 
     private const float _scoreDelay = 0.01f;
-
-    private bool _isInDrift;
 
     public int Score => _score;
 

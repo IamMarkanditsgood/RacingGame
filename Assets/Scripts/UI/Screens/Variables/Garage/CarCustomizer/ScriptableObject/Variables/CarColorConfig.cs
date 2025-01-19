@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 [CreateAssetMenu(fileName = "CarColor", menuName = "ScriptableObjects/UI/Car/CarColor", order = 1)]
 public class CarColorConfig : BasicCarComponentConfig
 {

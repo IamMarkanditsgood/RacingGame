@@ -14,7 +14,7 @@ public class EngineManager
 
     private Coroutine _decelerateCar;
 
-    public event Action OnDrift;
+    public event Action OnDriftCheckin;
 
     public void Init(CarData carData, Wheel[] wheels, Rigidbody carRigidbody)
     {
@@ -38,18 +38,16 @@ public class EngineManager
         CoroutineServices.instance.StopRoutine(_decelerateCar);
     }
 
-    // This method apply positive torque to the wheels in order to go forward.
     public void GoForward(ref float carSpeed)
     {
-        OnDrift?.Invoke();
+        OnDriftCheckin?.Invoke();
         SmoothThrottleDecrease(1f);
         HandleTorque(ref carSpeed, _carData.maxSpeed, -1f, false);
     }
-    
-    // This method apply negative torque to the wheels in order to go backwards.
+
     public void GoReverse(ref float carSpeed)
     {
-        OnDrift?.Invoke();
+        OnDriftCheckin?.Invoke();
         SmoothThrottleDecrease(-1f);
         HandleTorque(ref carSpeed, _carData.maxReverseSpeed, 1f, true);
     }
@@ -88,7 +86,7 @@ public class EngineManager
 
     private void DecelerateCar()
     {
-        OnDrift?.Invoke();
+        OnDriftCheckin?.Invoke();
         SmoothThrottleReset();
         ApplyDeceleration();
         StopCarIfSlow();
@@ -107,7 +105,6 @@ public class EngineManager
         BrakeTorqueChange(0);
     }
 
-    // This function applies brake torque to the wheels according to the brake force given by the user.
     private void BrakeTorqueChange(float torque)
     {
         foreach (var wheel in _wheels)

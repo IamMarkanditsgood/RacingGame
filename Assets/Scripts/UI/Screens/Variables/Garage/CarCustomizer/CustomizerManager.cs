@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static CustomizerManager;
 
 [Serializable]
 public class CustomizerManager
 {
     [SerializeField] private List<CarComponentPanels> _panelsCollection;
-
     [SerializeField] private Transform _container;
+
     private List<BasicComponentPanel> _panels = new List<BasicComponentPanel>();
 
     private const int _basicComponentIndex = 0;
+
     [Serializable]
     public class CarComponentPanels
     {
@@ -55,10 +55,8 @@ public class CustomizerManager
             {
                 basicComponentPanel.SaveBoughtCarComponent();
             }
-
-            if(IsBought(carComponentPanels, i))
+            if (IsBought(carComponentPanels, i))
             {
-
                 basicComponentPanel.IsBought = true;
             }
 
@@ -67,10 +65,12 @@ public class CustomizerManager
             _panels.Add(basicComponentPanel);
         }
     }
+
     private bool IsBought(CarComponentPanels carComponentPanels, int panelIndex)
     {
         List<string> savedComponents = new List<string>();
         savedComponents = SaveManager.PlayerPrefs.LoadStringList(carComponentPanels.type.ToString());
+
         for(int i = 0; i < savedComponents.Count; i++)
         {
             if (savedComponents[i] == carComponentPanels.basicCarComponentConfigs[panelIndex].name)

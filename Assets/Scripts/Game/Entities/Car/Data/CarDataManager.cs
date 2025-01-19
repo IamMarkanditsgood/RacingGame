@@ -1,10 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CarDataManager : MonoBehaviour
 {
     [SerializeField] private CarConfig _carConfig;
-
     [SerializeField] private CarData _carData = new CarData();
 
     public CarData CarData => _carData;
@@ -12,10 +10,13 @@ public class CarDataManager : MonoBehaviour
     public void Subscribe()
     {
         CarEvents.OnCarParameterModified += ModifyParameter;
+        CarEvents.OnParameterSaved += SaveCarData;
     }
+
     public void Unsubscribe()
     {
         CarEvents.OnCarParameterModified -= ModifyParameter;
+        CarEvents.OnParameterSaved -= SaveCarData;
     }
 
     public void Init()
@@ -29,7 +30,6 @@ public class CarDataManager : MonoBehaviour
             SetData();
             SaveManager.JsonStorage.SaveToJson(GameSaveKeys.CarData, _carData);
         }
-        
     }
     private void SetData()
     {
@@ -50,6 +50,11 @@ public class CarDataManager : MonoBehaviour
     private void LoadData()
     {
         _carData = SaveManager.JsonStorage.LoadFromJson<CarData>(GameSaveKeys.CarData);
+    }
+
+    private void SaveCarData()
+    {
+        SaveManager.JsonStorage.SaveToJson<CarData>(GameSaveKeys.CarData, _carData);
     }
 
     private void ModifyParameter(CarParameters carParameter, object value)
@@ -95,6 +100,5 @@ public class CarDataManager : MonoBehaviour
                 carParametersModifier.CanHandbrake(ref _carData, value);
                 break;
         }
-        SaveManager.JsonStorage.SaveToJson(GameSaveKeys.CarData, _carData);
     }
 }
