@@ -10,6 +10,7 @@ public class ColorCarComponent : BasicComponentPanel
             _interactionButton.GetComponentInChildren<TMP_Text>().text = "Use";
             SaveBoughtCarComponent();   
         }
+
         else
         {
             CarColorConfig carColorConfig = (CarColorConfig)_config;

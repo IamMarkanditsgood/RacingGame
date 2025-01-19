@@ -31,7 +31,7 @@ public class JsonStorage
 
     private string GetFilePath(string key)
     {
-
+        Debug.Log(Path.Combine(Application.persistentDataPath, $"{key}.json"));
         return Path.Combine(Application.persistentDataPath, $"{key}.json");
     }
 }

@@ -41,6 +41,7 @@ MonoBehaviour:
   - RespawnSpaceship
   - SyncTimer
   - FinishGameOnAllClients
+  - SyncMaterialAcrossNetwork
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

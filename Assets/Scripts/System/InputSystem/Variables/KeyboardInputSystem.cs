@@ -2,7 +2,7 @@
 
 public class KeyboardInputSystem : IInputable
 {
-    public void CheckInput()
+    public void UpdateInput()
     {
         CheckButtonsInput();
     }
@@ -23,27 +23,47 @@ public class KeyboardInputSystem : IInputable
     {
         if (Input.GetKey(KeyCode.W))
         {
-            InputEvents.InvokeW();
+            InputEvents.InvokeForward(true);
         }
+        else if (Input.GetKeyUp(KeyCode.W))
+        {
+            InputEvents.InvokeForward(false);
+        }
+
         if (Input.GetKey(KeyCode.S))
         {
-            InputEvents.InvokeS();
+            InputEvents.InvokeBack(true);
         }
+        else if (Input.GetKeyUp(KeyCode.S))
+        {
+            InputEvents.InvokeBack(false);
+        }
+
         if (Input.GetKey(KeyCode.A))
         {
-            InputEvents.InvokeA();
+            InputEvents.InvokeLeft(true);
         }
+        else if (Input.GetKeyUp(KeyCode.A))
+        {
+            InputEvents.InvokeLeft(false);
+        }
+
         if (Input.GetKey(KeyCode.D))
         {
-            InputEvents.InvokeD();
+            InputEvents.InvokeRight(true);
         }
+        else if (Input.GetKeyUp(KeyCode.D))
+        {
+            InputEvents.InvokeRight(false);
+        }
+
         if (Input.GetKey(KeyCode.Space))
         {
-            InputEvents.InvokeSpace(1);
+            InputEvents.InvokeHandBrake(true);
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
-            InputEvents.InvokeSpace(0);
+            InputEvents.InvokeHandBrake(false);
         }
     }
 }

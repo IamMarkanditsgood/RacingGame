@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private ResourcesManager _resourcesManager;
     [SerializeField] private SceneCollector _sceneCollector;
     [SerializeField] private GameTimerManager _gameTimerManager; // Додаємо GameTimerManager
+    [SerializeField] private InputSystem _inputSystem;
 
     private DriftManager _driftManager = new DriftManager();
     private int _points;
@@ -51,7 +52,7 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
-        _sceneCollector.CollectScene(_levelConfig);
+        _sceneCollector.CollectScene(_levelConfig, _inputSystem);
         Time.timeScale = 1;
 
         // Запускаємо таймер тільки якщо цей гравець є MasterClient
@@ -63,8 +64,11 @@ public class GameController : MonoBehaviour
 
     private void FinishGame()
     {
-        _gameTimerManager.StopAllCoroutines(); // Якщо потрібно зупинити корутини
-        CalculateReward();
+        _gameTimerManager.StopAllCoroutines(); // Якщо потрібно зупинити корутини     
+        UIManager.Instance.ShowPopup(PopupTypes.WinGame);
+        WinPopup winPopup = (WinPopup) UIManager.Instance.GetPopup(PopupTypes.WinGame);
+        int points = _points + _driftManager.Score;
+        winPopup.Init(points);
 
         CarEvents.Drift(false);
         Time.timeScale = 0;
@@ -75,9 +79,4 @@ public class GameController : MonoBehaviour
         _points += amount;
     }
 
-    private void CalculateReward()
-    {
-        ResourcesManager.Instance.ModifyResource(ResourceTypes.TotalPoints, _points);
-        ResourcesManager.Instance.ModifyResource(ResourceTypes.Coins, _points);
-    }
 }

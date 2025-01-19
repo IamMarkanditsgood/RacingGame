@@ -10,7 +10,8 @@ public class CarController : MonoBehaviour
     [SerializeField] private IsMine _isMime;
     [SerializeField] private PhotonView _photonView;
 
-    private CarInputSystem _carInputSystem = new CarInputSystem();
+    private InputSystem _inputSystem = new InputSystem();
+    private CarInputManager _carInputManager = new CarInputManager();
 
     public  bool _isMyCare;
 
@@ -24,10 +25,10 @@ public class CarController : MonoBehaviour
         yield return new WaitUntil(() => _photonView.IsMine || PhotonNetwork.InRoom);
 
         _isMyCare = _isMime.IsItMe(_photonView);
-
+        Debug.Log(_isMime.IsItMe(_photonView));
         if (_isMyCare)
         {
-            Init();
+            Configure();
             Subscribe();
         }
     }
@@ -38,9 +39,10 @@ public class CarController : MonoBehaviour
         {
             _carMovementManager.UpdateCarData(gameObject);
 
-            _carInputSystem.CheckInput();
+            _inputSystem.UpdateInputs();
+            CheckInputs();
+            _carMovementManager.CheckIdleConditions(_carInputManager);
 
-            _carMovementManager.CheckIdleConditions(_carInputSystem);
             _carMovementManager.AnimateWheelMeshes();
         }
     }
@@ -61,10 +63,14 @@ public class CarController : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(InputSystem inputSystem)
+    {
+        _inputSystem = inputSystem;
+    }
+    private void Configure()
     {
         _carDataManager.Init();
-        _carInputSystem.Init();
+        _inputSystem.Init();
         _carMovementManager.Init(_carDataManager.CarData, gameObject);
 
         if (GetComponent<CarVisualCustomizer>())
@@ -78,11 +84,37 @@ public class CarController : MonoBehaviour
     {
         _carMovementManager.Subscribe();
         _carEffectManager.Subscribe();
+
+        _carInputManager.Subscribe();
     }
 
     private void UnSubscribe()
     {
         _carMovementManager.Unsubscribe();
         _carEffectManager.UnSubscribe();
+
+        _carInputManager.Unsubscribe();
+    }
+
+    private void CheckInputs()
+    {
+        if(_carInputManager.IsFPressed)
+        {
+            _carMovementManager.GoForwardHandler();
+        }
+        if (_carInputManager.IsBPressed)
+        {
+            _carMovementManager.GoReverseHandler();
+        }
+        if (_carInputManager.IsLPressed)
+        {
+            _carMovementManager.TurnLeft();
+        }
+        if (_carInputManager.IsRPressed)
+        {
+            _carMovementManager.TurnRight();
+        }
+
+        _carMovementManager.HandBreackAction(_carInputManager.IsDPressed);
     }
 }

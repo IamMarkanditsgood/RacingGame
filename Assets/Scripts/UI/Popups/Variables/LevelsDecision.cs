@@ -8,15 +8,32 @@ public class LevelsDecision : BasicPopup
 {
     [SerializeField] private PhotonRoomsManager _roomsManager;
     [SerializeField] private Transform _container;
+    [SerializeField] private Button _backButton;
     [SerializeField] private Button _buttonPref;
     [SerializeField] private List<LeveTypes> _levels;
 
     private List<Button> _levelButtons = new List<Button>();
 
+    private void Start()
+    {
+        Subscribe();
+    }
     private void OnDestroy()
     {
         UnsubscribeLevelButtons();
+        UnSubscribe();
     }
+
+    private void Subscribe()
+    {
+        _backButton.onClick.AddListener(Back);
+    }
+
+    private void UnSubscribe()
+    {
+        _backButton.onClick.RemoveListener(Back);
+    }
+
     private void SubscribeLevelButtons()
     {
         for(int i = 0; i < _levelButtons.Count; i++)
@@ -57,5 +74,10 @@ public class LevelsDecision : BasicPopup
     {
         CarTypes carType = SaveManager.PlayerPrefs.LoadEnum(GarageSaveKeys.CurrentSelectedCar, CarTypes.CarBasic);
         _roomsManager.CreateRoom(_levels[levelIndex], carType);
+    }
+
+    private void Back()
+    {
+        Hide();
     }
 }

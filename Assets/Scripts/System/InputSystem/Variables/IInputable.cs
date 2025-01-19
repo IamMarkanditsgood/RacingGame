@@ -3,6 +3,5 @@ using UnityEngine;
 
 public interface IInputable
 {
-    public void CheckInput();
-    public bool IsPressed(KeyCode key);
+    public void UpdateInput();
 }

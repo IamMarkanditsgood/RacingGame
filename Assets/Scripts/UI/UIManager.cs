@@ -55,7 +55,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowPopup(PopupTypes popupType)
     {
-        CloseAllPopups();
 
         foreach (var popup in _popups)
         {
@@ -71,14 +70,6 @@ public class UIManager : MonoBehaviour
         foreach (var screen in _screens)
         {
             screen.Hide();
-        }
-    }
-
-    private void CloseAllPopups()
-    {
-        foreach (var popup in _popups)
-        {
-            popup.Hide();
         }
     }
 }

@@ -10,6 +10,8 @@ public class DriftManager
 
     private bool _isInDrift;
 
+    public int Score => _score;
+
     public void Subscribe()
     {
         CarEvents.OnDrift += Drift;

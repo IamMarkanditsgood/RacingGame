@@ -7,7 +7,7 @@ using UnityEngine.UI;
 [Serializable]
 public class CarShopManager
 {
-    [SerializeField] private GameObject _car;
+    private GameObject _car;
     [SerializeField] private Transform _carSpawnPos;
     [SerializeField] private Button _interactButton;
     [SerializeField] private Button _nextButton;

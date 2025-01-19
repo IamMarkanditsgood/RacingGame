@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GameScreen : BasicScreen
 {
+    [SerializeField] private GameObject _buttons;
+
     [SerializeField] private TMP_Text _driftScoreText;
     [SerializeField] private TMP_Text _pointsText;
     [SerializeField] private TMP_Text _speedText;
@@ -33,6 +35,7 @@ public class GameScreen : BasicScreen
     public override void SetScreen()
     {
         ResetScreen();
+        SetButtons();      
     }
 
     private void Subscribe()
@@ -49,6 +52,18 @@ public class GameScreen : BasicScreen
         GameEvents.OnDriftScoreeUpdate -= UpdateDriftScore;
         GameEvents.OnSpeedUpdate -= UpdateCarSpeed;
         GameEvents.OnPointsUpdate -= UpdatePoints;
+    }
+
+    private void SetButtons()
+    {
+        if (SystemInfo.deviceType == DeviceType.Desktop)
+        {
+            _buttons.SetActive(false);
+        }
+        else if (SystemInfo.deviceType == DeviceType.Handheld)
+        {
+            _buttons.SetActive(true);
+        }
     }
 
     private void UpdateTimer(float seconds)

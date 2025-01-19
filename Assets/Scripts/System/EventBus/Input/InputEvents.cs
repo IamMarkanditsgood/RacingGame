@@ -4,16 +4,16 @@ using UnityEngine;
 
 public static class InputEvents
 {
-    public static event Action OnWPressed;
-    public static event Action OnSPressed;
-    public static event Action OnAPressed;
-    public static event Action OnDPressed;
+    public static event Action<bool> OnFPressed;
+    public static event Action<bool> OnBPressed;
+    public static event Action<bool> OnLPressed;
+    public static event Action<bool> OnRPressed;
 
-    public static event Action<int> OnSpacePressed;
+    public static event Action<bool> OnHandBrakePressed;
 
-    public static void InvokeW() => OnWPressed?.Invoke();
-    public static void InvokeS() => OnSPressed?.Invoke();
-    public static void InvokeA() => OnAPressed?.Invoke();
-    public static void InvokeD() => OnDPressed?.Invoke();
-    public static void InvokeSpace(int value) => OnSpacePressed?.Invoke(value);
+    public static void InvokeForward(bool state) => OnFPressed?.Invoke(state);
+    public static void InvokeBack(bool state) => OnBPressed?.Invoke(state);
+    public static void InvokeLeft(bool state) => OnLPressed?.Invoke(state);
+    public static void InvokeRight(bool state) => OnRPressed?.Invoke(state);
+    public static void InvokeHandBrake(bool state) => OnHandBrakePressed?.Invoke(state);
 }

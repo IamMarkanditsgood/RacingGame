@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Buffers;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -25,23 +27,11 @@ public partial class CarMovementManager
 
     public void Subscribe()
     {
-        InputEvents.OnWPressed += GoForwardHandler;
-        InputEvents.OnSPressed += GoReverseHandler;
-        InputEvents.OnAPressed += _steeringManager.TurnLeft;
-        InputEvents.OnDPressed += _steeringManager.TurnRight;
-        InputEvents.OnSpacePressed += SpaceAction;
-
         _engineManager.OnDrift += HandleDriftEffect;
         _handbrakeManager.OnDrift += HandleDriftEffect;
     }
     public void Unsubscribe()
     {
-        InputEvents.OnWPressed -= GoForwardHandler;
-        InputEvents.OnSPressed -= GoReverseHandler;
-        InputEvents.OnAPressed -= _steeringManager.TurnLeft;
-        InputEvents.OnDPressed -= _steeringManager.TurnRight;
-        InputEvents.OnSpacePressed -= SpaceAction;
-
         _engineManager.OnDrift -= HandleDriftEffect;
         _handbrakeManager.OnDrift -= HandleDriftEffect;
     }
@@ -75,27 +65,21 @@ public partial class CarMovementManager
         _engineManager.UpdateLocalVelocityZ(_localVelocityZ);
     }
 
-    public void CheckIdleConditions(CarInputSystem carInputSystem)
+    public void CheckIdleConditions(CarInputManager carInputManager)
     {
-        bool IsWPressed = carInputSystem.IsPressed(new KeyboardInputSystem(), KeyCode.W);
-        bool IsSPressed = carInputSystem.IsPressed(new KeyboardInputSystem(), KeyCode.S);
-        bool IsAPressed = carInputSystem.IsPressed(new KeyboardInputSystem(), KeyCode.A);
-        bool IsDPressed = carInputSystem.IsPressed(new KeyboardInputSystem(), KeyCode.D);
 
-        bool IsSpacePressed = carInputSystem.IsPressed(new KeyboardInputSystem(), KeyCode.Space);
-
-        if (!IsSPressed && !IsWPressed)
+        if (!carInputManager.IsBPressed && !carInputManager.IsFPressed)
         {
             _engineManager.ThrottleChange(0);
         }
 
-        if (!IsSPressed && !IsWPressed && !IsSpacePressed && !_deceleratingCar)
+        if (!carInputManager.IsBPressed && !carInputManager.IsFPressed && !carInputManager.IsDPressed && !_deceleratingCar)
         {
             _engineManager.StartCarDevelerating();
             _deceleratingCar = true;
         }
 
-        if (!IsAPressed && !IsDPressed)
+        if (!carInputManager.IsLPressed && !carInputManager.IsRPressed)
         {
             _steeringManager.ResetSteeringAngle();
         }
@@ -144,39 +128,41 @@ public partial class CarMovementManager
         wheelFrictionExtremumSlip = collider.sidewaysFriction.extremumSlip;
     }
 
-    private void GoForwardHandler()
+    public void GoForwardHandler()
     {
         _engineManager.StopCarDevelerating();
         _deceleratingCar = false;
         _engineManager.GoForward(ref _carSpeed);
     }
 
-    private void GoReverseHandler()
+    public void GoReverseHandler()
     {
         _engineManager.StopCarDevelerating();
         _deceleratingCar = false;
         _engineManager.GoReverse(ref _carSpeed);
     }
 
-    private void SpaceAction(int state)
+    public void TurnLeft()
+    {
+        _steeringManager.TurnLeft();
+    }
+    public void TurnRight()
+    {
+        _steeringManager.TurnRight();
+    }
+    public void HandBreackAction(bool state)
     {
         if (!_carData.canHandbrake)
             return;
 
-        switch (state)
+        if(state)
         {
-            case 1:
-                _deceleratingCar = true;
-                _handbrakeManager.HandbrakeActivate();
-                break;
-
-            case 0:
-                _handbrakeManager.RecoverTraction();
-                break;
-
-            default:
-                Debug.LogWarning($"Unexpected state: {state}");
-                break;
+            _deceleratingCar = true;
+            _handbrakeManager.HandbrakeActivate();
+        }
+        else
+        {
+            _handbrakeManager.RecoverTraction();
         }
     }
 

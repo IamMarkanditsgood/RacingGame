@@ -1,0 +1,44 @@
+<dependencies>
+  <packages>
+    <package>com.google.android.gms:play-services-ads-identifier:18.1.0</package>
+    <package>com.unity3d.ads-mediation:mediation-sdk:8.6.1</package>
+  </packages>
+  <files>
+    <file>Assets/Plugins/Android/androidx.activity.activity-1.0.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.annotation.annotation-1.1.0.jar</file>
+    <file>Assets/Plugins/Android/androidx.arch.core.core-common-2.1.0.jar</file>
+    <file>Assets/Plugins/Android/androidx.arch.core.core-runtime-2.0.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.collection.collection-1.1.0.jar</file>
+    <file>Assets/Plugins/Android/androidx.core.core-1.2.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.customview.customview-1.0.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.fragment.fragment-1.1.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-common-2.1.0.jar</file>
+    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-livedata-2.0.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-livedata-core-2.0.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-runtime-2.1.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-viewmodel-2.1.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.loader.loader-1.0.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.savedstate.savedstate-1.0.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.versionedparcelable.versionedparcelable-1.1.0.aar</file>
+    <file>Assets/Plugins/Android/androidx.viewpager.viewpager-1.0.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-ads-identifier-18.1.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-basement-18.4.0.aar</file>
+    <file>Assets/Plugins/Android/com.unity3d.ads-mediation.mediation-sdk-8.6.1.aar</file>
+    <file>Assets/Plugins/Android/org.jetbrains.annotations-13.0.jar</file>
+    <file>Assets/Plugins/Android/org.jetbrains.kotlin.kotlin-stdlib-1.8.22.jar</file>
+    <file>Assets/Plugins/Android/org.jetbrains.kotlin.kotlin-stdlib-common-1.8.22.jar</file>
+  </files>
+  <settings>
+    <setting name="androidAbis" value="armeabi-v7a" />
+    <setting name="bundleId" value="com.Mark.Test" />
+    <setting name="explodeAars" value="True" />
+    <setting name="gradleBuildEnabled" value="True" />
+    <setting name="gradleTemplateEnabled" value="False" />
+    <setting name="installAndroidPackages" value="True" />
+    <setting name="packageDir" value="Assets/Plugins/Android" />
+    <setting name="patchAndroidManifest" value="True" />
+    <setting name="patchMainTemplateGradle" value="True" />
+    <setting name="projectExportEnabled" value="False" />
+    <setting name="useJetifier" value="True" />
+  </settings>
+</dependencies>
