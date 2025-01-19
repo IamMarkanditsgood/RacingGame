@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CarSquere
   m_EditorClassIdentifier: 
   _carType: 1
-  _carMaterial: {fileID: 2100000, guid: 07f44fe3e9c462146a7769b976c50ec4, type: 2}
+  _carMaterial: {fileID: 2100000, guid: c4c2ee3e832cffd48bb9d156c2b21376, type: 2}
   _maxSpeed: 120
   _maxReverseSpeed: 45
   _accelerationMultiplier: 6

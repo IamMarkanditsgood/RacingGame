@@ -63,7 +63,7 @@ public abstract class BasicComponentPanel : MonoBehaviour
 
     protected virtual void SetParametersText<T>(List<CarParameters> parameters, List<T> values, TMP_Text parametersText)
     {
-        parametersText.text = "";
+        
         for (int i = 0; i < parameters.Count; i++)
         {
             parametersText.text += parameters[i] + " = " + values[i] + "\n";
