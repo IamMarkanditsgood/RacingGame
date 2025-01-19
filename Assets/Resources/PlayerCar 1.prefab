@@ -560,6 +560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _carRenderer: {fileID: 820100142661910713}
+  _photonView: {fileID: -745850883221512219}
 --- !u!114 &-4845682588396240046
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2598,6 +2598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view: {fileID: 2132582290}
   _screenType: 2
+  _buttons: {fileID: 295847588}
   _driftScoreText: {fileID: 158447111}
   _pointsText: {fileID: 1703514426}
   _speedText: {fileID: 766176661}
