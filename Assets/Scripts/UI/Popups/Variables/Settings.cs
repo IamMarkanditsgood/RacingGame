@@ -1,14 +1,16 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class IAPCoinBuy : BasicPopup
+public class Settings : BasicPopup
 {
     public override void ResetPopup()
     {
+    
     }
 
     public override void SetPopup()
     {
+      
     }
-
 }

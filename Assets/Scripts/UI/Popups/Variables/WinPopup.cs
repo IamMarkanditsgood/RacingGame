@@ -14,18 +14,11 @@ public class WinPopup : BasicPopup
 
     int points;
 
-    private void Start()
+    public override void Subscribe()
     {
+        base.Subscribe();
         IronSource.Agent.init("20c5b769d", IronSourceAdUnits.REWARDED_VIDEO);
-        Subscribe();
-    }
-    private void OnDestroy()
-    {
-        UnSubscribe();
-    }
 
-    private void Subscribe()
-    {
         _mainMenu.onClick.AddListener(MainMenu);
         _getReward.onClick.AddListener(GetReward);
 
@@ -39,8 +32,9 @@ public class WinPopup : BasicPopup
         IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
 
     }
-    private void UnSubscribe()
+    public override void Unsubscribe()
     {
+        base.Unsubscribe(); 
         _mainMenu.onClick.RemoveListener(MainMenu);
         _getReward.onClick.RemoveListener(GetReward);
 

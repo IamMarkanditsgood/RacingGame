@@ -8,28 +8,17 @@ public class OnlineLoby : BasicPopup
     [SerializeField] private PhotonRoomsManager _roomsManager;
     [SerializeField] private Button _createRoom;
     [SerializeField] private Button _joinRandomRoom;
-    [SerializeField] private Button _backButton;
 
-    private void Start()
+    public override void Subscribe()
     {
-        Subscribe();
-    }
-
-    private void OnDestroy()
-    {
-        UnSubscribe();
-    }
-
-    private void Subscribe()
-    {
-        _backButton.onClick.AddListener(Back);
+        base.Subscribe();
         _createRoom.onClick.AddListener(CreateRoom);
         _joinRandomRoom.onClick.AddListener(JoinRandomRoom);
     }
 
-    private void UnSubscribe()
+    public override void Unsubscribe()
     {
-        _backButton.onClick.RemoveListener(Back);
+        base.Unsubscribe();
         _createRoom.onClick.RemoveListener(CreateRoom);
         _joinRandomRoom.onClick.RemoveListener(JoinRandomRoom);
     }
@@ -50,10 +39,5 @@ public class OnlineLoby : BasicPopup
     private void JoinRandomRoom()
     {
         _roomsManager.JoinRandomRoom();
-    }
-
-    private void Back()
-    {
-        Hide();
     }
 }
