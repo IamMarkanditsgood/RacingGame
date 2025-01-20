@@ -47,6 +47,8 @@ MonoBehaviour:
   - SyncTireSkid
   - RPC_SyncDriftEffect
   - RPC_SyncTireSkid
+  - RPC_HandleDriftEffect
+  - RPC_HandleTireSkidEffect
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

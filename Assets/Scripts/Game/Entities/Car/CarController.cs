@@ -6,14 +6,12 @@ public class CarController : MonoBehaviour
 {
     [SerializeField] private CarDataManager _carDataManager;
     [SerializeField] private CarMovementManager _carMovementManager;
-    [SerializeField] private CarEffectManager _carEffectManager;
-    [SerializeField] private IsMine _isMime;
     [SerializeField] private PhotonView _photonView;
 
     private InputSystem _inputSystem = new InputSystem();
     private CarInputManager _carInputManager = new CarInputManager();
 
-    public  bool _isMyCare;
+    private bool _isMyCare;
 
     private void Start()
     {
@@ -24,8 +22,8 @@ public class CarController : MonoBehaviour
     {
         yield return new WaitUntil(() => _photonView.IsMine || PhotonNetwork.InRoom);
 
-        _isMyCare = _isMime.IsItMe(_photonView);
-        Debug.Log(_isMime.IsItMe(_photonView));
+        _isMyCare = _photonView.IsMine;
+
         if (_isMyCare)
         {
             Configure();
@@ -69,10 +67,26 @@ public class CarController : MonoBehaviour
     }
 
     private void Configure()
-    {
+    {   
         _carDataManager.Init();
         _inputSystem.Init();
         _carMovementManager.Init(_carDataManager.CarData, gameObject);
+
+        ConfigureCarEffects();
+        ConfigureCarVisualCustomizer();
+    }
+
+    private void ConfigureCarEffects()
+    {
+        if (GetComponent<CarEffectManager>())
+        {
+            CarEffectManager carEffectManager = GetComponent<CarEffectManager>();
+            carEffectManager.Init(_photonView);
+        }
+    }
+
+    private void ConfigureCarVisualCustomizer()
+    {
 
         if (GetComponent<CarVisualCustomizer>())
         {
@@ -84,14 +98,12 @@ public class CarController : MonoBehaviour
     private void Subscribe()
     {
         _carMovementManager.Subscribe();
-        _carEffectManager.Subscribe();
         _carInputManager.Subscribe();
     }
 
     private void UnSubscribe()
     {
         _carMovementManager.Unsubscribe();
-        _carEffectManager.UnSubscribe();
         _carInputManager.Unsubscribe();
     }
 

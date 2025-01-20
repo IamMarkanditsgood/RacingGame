@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 5124896061683390646}
   - component: {fileID: -8307074950256894047}
   - component: {fileID: -5324184086031350633}
-  - component: {fileID: -4845682588396240046}
+  - component: {fileID: 7674250304964684151}
   - component: {fileID: -745850883221512219}
   - component: {fileID: 8721480225113414337}
   m_Layer: 0
@@ -512,15 +512,7 @@ MonoBehaviour:
       wheelCollider: {fileID: 5376453751505036398}
     _carSpeed: 0
     _isDrifting: 0
-  _carEffectManager:
-    useEffects: 1
-    RLWParticleSystem: {fileID: 4915955796716198706}
-    RRWParticleSystem: {fileID: 4278369464530284162}
-    RLWTireSkid: {fileID: 7540023553377996619}
-    RRWTireSkid: {fileID: 4242784342606716318}
-  _isMime: {fileID: -4845682588396240046}
   _photonView: {fileID: -745850883221512219}
-  _isMyCare: 0
 --- !u!114 &-8307074950256894047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,7 +553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _carRenderer: {fileID: 820100142661910713}
   _photonView: {fileID: -745850883221512219}
---- !u!114 &-4845682588396240046
+--- !u!114 &7674250304964684151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -570,9 +562,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1502887000207577150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed98e3ab7d53346478c0550a4c2a02c8, type: 3}
+  m_Script: {fileID: 11500000, guid: cbb91ebd768129043ba7110cc8ee6cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useEffects: 1
+  RLWParticleSystem: {fileID: 4915955796716198706}
+  RRWParticleSystem: {fileID: 4278369464530284162}
+  RLWTireSkid: {fileID: 7540023553377996619}
+  RRWTireSkid: {fileID: 4242784342606716318}
 --- !u!114 &-745850883221512219
 MonoBehaviour:
   m_ObjectHideFlags: 0
