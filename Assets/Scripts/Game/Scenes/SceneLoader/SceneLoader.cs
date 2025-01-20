@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class SceneLoader : MonoBehaviour
 
     private void Start()
     {
-        _photonConnector.OnPhotonConnected += OnPhotonConnected; 
+        _photonConnector.OnPhotonConnected += OnPhotonConnected;
         _photonConnector.Connect();
     }
 
@@ -22,6 +22,8 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadSceneAsync(int sceneIndex)
     {
+        SetGraphicsQuality();
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
 
         while (!operation.isDone)
@@ -34,5 +36,12 @@ public class SceneLoader : MonoBehaviour
 
             yield return null;
         }
+    }
+    private void SetGraphicsQuality()
+    {
+        int index = SaveManager.PlayerPrefs.LoadInt(GameSaveKeys.QualityKey, QualitySettings.GetQualityLevel());
+
+        QualitySettings.SetQualityLevel(index, true);
+        Debug.Log($"Graphics quality set to: {QualitySettings.names[index]}");
     }
 }
