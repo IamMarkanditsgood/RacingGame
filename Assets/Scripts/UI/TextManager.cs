@@ -3,10 +3,18 @@ using UnityEngine;
 
 public class TextManager
 {
-    public void SetText(object message, TMP_Text textRow, bool formatKNumber = false, string frontAddedMessage = "", string endAddedMessage = "")
+    public void SetText(object message, TMP_Text textRow, bool formatKNumber = false, string frontAddedMessage = "", string endAddedMessage = "", bool addToPrevious = false)
     {
         string formattedText = GetFormattedText(message, formatKNumber);
-        textRow.text = frontAddedMessage + formattedText + endAddedMessage; 
+
+        if (addToPrevious)
+        {
+            textRow.text += frontAddedMessage + formattedText + endAddedMessage;
+        }
+        else 
+        {
+            textRow.text = frontAddedMessage + formattedText + endAddedMessage;
+        }
     }
 
     public void SetTimerText(TMP_Text textRow, float seconds, bool showHoursAndMinutes = false, string frontAddedMessage = "", string endAddedMessage = "")

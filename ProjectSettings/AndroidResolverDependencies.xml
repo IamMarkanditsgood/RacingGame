@@ -29,8 +29,8 @@
     <file>Assets/Plugins/Android/org.jetbrains.kotlin.kotlin-stdlib-common-1.8.22.jar</file>
   </files>
   <settings>
-    <setting name="androidAbis" value="armeabi-v7a" />
-    <setting name="bundleId" value="com.Mark.Test" />
+    <setting name="androidAbis" value="arm64-v8a,armeabi-v7a" />
+    <setting name="bundleId" value="com.Mark.RacingGame" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
     <setting name="gradleTemplateEnabled" value="False" />

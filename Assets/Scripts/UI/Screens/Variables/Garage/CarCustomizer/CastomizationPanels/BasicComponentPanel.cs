@@ -65,7 +65,7 @@ public abstract class BasicComponentPanel : MonoBehaviour
     {
         for (int i = 0; i < parameters.Count; i++)
         {
-            _textManager.SetText(values[i], parametersText, false, parameters[i].ToString(), "\n");
+            _textManager.SetText(values[i], parametersText, false, parameters[i].ToString(), "\n", true);
         }
     }
 
