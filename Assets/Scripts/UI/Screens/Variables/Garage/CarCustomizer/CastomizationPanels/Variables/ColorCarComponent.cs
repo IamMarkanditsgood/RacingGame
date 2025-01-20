@@ -11,7 +11,7 @@ public class ColorCarComponent : BasicComponentPanel
             SaveBoughtCarComponent();   
         }
 
-        else
+        else if(_isBought)
         {
             CarColorConfig carColorConfig = (CarColorConfig)_config;
             CarEvents.ModifyCarParameter(carColorConfig.CarParameter, carColorConfig.Material);

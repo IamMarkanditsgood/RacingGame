@@ -21,7 +21,7 @@ public class EngineComponent : BasicComponentPanel
 
             SaveBoughtCarComponent();
         }
-        else
+        else if (_isBought)
         {
             CarEngineComponent carColorConfig = (CarEngineComponent)_config;
 

@@ -22,7 +22,7 @@ public class HandBrakeComponent : BasicComponentPanel
             _interactionButton.GetComponentInChildren<TMP_Text>().text = "Use";
             SaveBoughtCarComponent();
         }
-        else
+        else if (_isBought)
         {
             CarEvents.ModifyCarParameter(CarParameters.CanHandbrake, true);
         }

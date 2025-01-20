@@ -23,7 +23,7 @@ public class WheelsCarComponent : BasicComponentPanel
             _interactionButton.GetComponentInChildren<TMP_Text>().text = "Use";
             SaveBoughtCarComponent();
         }
-        else
+        else if (_isBought)
         {
             CarWheelsComponent carColorConfig = (CarWheelsComponent)_config;
 
