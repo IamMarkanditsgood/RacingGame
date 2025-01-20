@@ -66,6 +66,7 @@ public class MainMenu : BasicScreen
 
     private void Exit()
     {
+        CarEvents.SaveParameters();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

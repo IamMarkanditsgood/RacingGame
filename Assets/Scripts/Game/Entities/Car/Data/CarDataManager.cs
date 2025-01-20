@@ -24,6 +24,7 @@ public class CarDataManager : MonoBehaviour
         if (SaveManager.JsonStorage.Exists(GameSaveKeys.CarData))
         {
             LoadData();
+            SaveManager.JsonStorage.SaveToJson(GameSaveKeys.CarData, _carData);
         }
         else
         {

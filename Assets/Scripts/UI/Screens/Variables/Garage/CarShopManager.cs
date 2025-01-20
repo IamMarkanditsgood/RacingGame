@@ -151,6 +151,8 @@ public class CarShopManager
 
     private void NextCar()
     {
+        CarEvents.SaveParameters();
+
         _prevButton.interactable = true;
         _currentCarIndex++;
         _currentSelectedCar = _cars[_currentCarIndex];
@@ -165,6 +167,8 @@ public class CarShopManager
 
     private void PreviousCar()
     {
+        CarEvents.SaveParameters();
+
         _nextButton.interactable = true;
         _currentCarIndex--;
         _currentSelectedCar = _cars[_currentCarIndex];

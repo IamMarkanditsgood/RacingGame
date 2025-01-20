@@ -59,7 +59,8 @@ public class LevelsDecision : BasicPopup
     {
         CarEvents.SaveParameters();
 
-        CarTypes carType = SaveManager.PlayerPrefs.LoadEnum(GarageSaveKeys.CurrentSelectedCar, CarTypes.CarBasic);
+        CarData carData = SaveManager.JsonStorage.LoadFromJson<CarData>(GameSaveKeys.CarData);
+        CarTypes carType = carData.carType;
         _roomsManager.CreateRoom(_levels[levelIndex], carType);
     }
 }

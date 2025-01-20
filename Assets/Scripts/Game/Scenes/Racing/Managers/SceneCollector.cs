@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Cinemachine;
 using ExitGames.Client.Photon;
 using Photon.Pun;
@@ -16,9 +17,7 @@ public class SceneCollector
 
     public void CollectScene(GameSceneConfig gameSceneConfig, InputSystem inputSystem)
     {
-        var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-
-        if (!TryGetRoomProperties(roomProperties, out var level, out var carType))
+        if (!TryGetRoomProperties(out var level, out var carType))
             return;
 
         if (!TryGetPrefabs(gameSceneConfig, level, carType, out var scenePrefab, out var carPrefab))
@@ -30,19 +29,24 @@ public class SceneCollector
         ConfigureVirtualCamera();
     }
 
-    private bool TryGetRoomProperties(Hashtable roomProperties, out LevelTypes level, out CarTypes carType)
+    private bool TryGetRoomProperties(out LevelTypes level, out CarTypes carType)
     {
         level = default;
         carType = default;
-
-        if (!roomProperties.TryGetValue("Level", out object levelObj) ||
-            !roomProperties.TryGetValue("CarType", out object carTypeObj))
+        if (!PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Level", out object levelObj))
         {
-            Debug.LogError("Failed to retrieve level or car type from room properties.");
+            Debug.LogError("Failed to retrieve level from room properties.");
             return false;
         }
 
         level = (LevelTypes)levelObj;
+
+        if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("CarType", out object carTypeObj))
+        {
+            Debug.LogError("Failed to retrieve car type from player properties.");
+            return false;
+        }
+
         carType = (CarTypes)carTypeObj;
         return true;
     }
@@ -76,24 +80,65 @@ public class SceneCollector
     private void SpawnCar(GameObject scene, GameObject carPrefab, InputSystem inputSystem)
     {
         Transform[] allChildren = scene.GetComponentsInChildren<Transform>();
+        Transform carSpawnPos = FindFreeSpawnPoint(allChildren);
 
-        Transform carSpawnPos = null;
-        foreach (Transform child in allChildren)
-        {
-            if (child.CompareTag("SpawnPos"))
-            {
-                carSpawnPos = child;
-                break;
-            }
-        }
         if (carSpawnPos == null)
         {
             Debug.LogError("No free spawn position found in the scene.");
             return;
         }
+
         Car = PhotonNetwork.Instantiate(carPrefab.name, carSpawnPos.position, carSpawnPos.rotation);
         Car.GetComponent<CarController>().Init(inputSystem);
+
+        MarkSpawnPointAsUsed(carSpawnPos.name);
+
         UnityEngine.Object.Destroy(carSpawnPos.gameObject);
+    }
+    private void MarkSpawnPointAsUsed(string spawnPointName)
+    {
+        var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        string usedPoints = roomProperties.TryGetValue("UsedSpawnPoints", out object usedPointsObj)
+            ? (string)usedPointsObj
+            : string.Empty;
+
+        if (!usedPoints.Contains(spawnPointName))
+        {
+            usedPoints = string.IsNullOrEmpty(usedPoints)
+                ? spawnPointName
+                : usedPoints + "," + spawnPointName;
+
+            var newProperties = new Hashtable
+        {
+            { "UsedSpawnPoints", usedPoints }
+        };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(newProperties);
+        }
+    }
+    private bool IsSpawnPointUsed(string spawnPointName)
+    {
+        var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        if (roomProperties.TryGetValue("UsedSpawnPoints", out object usedPointsObj))
+        {
+            string usedPoints = (string)usedPointsObj;
+
+            return usedPoints.Split(',').Contains(spawnPointName);
+        }
+
+        return false;
+    }
+    private Transform FindFreeSpawnPoint(Transform[] allChildren)
+    {
+        foreach (Transform child in allChildren)
+        {
+            if (child.CompareTag("SpawnPos") && !IsSpawnPointUsed(child.name))
+            {
+                return child;
+            }
+        }
+        return null;
     }
 
     private void ConfigureVirtualCamera()

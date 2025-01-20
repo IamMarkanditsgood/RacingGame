@@ -37,6 +37,8 @@ public class OnlineLoby : BasicPopup
 
     private void JoinRandomRoom()
     {
-        _roomsManager.JoinRandomRoom();
+        CarEvents.SaveParameters();
+        CarTypes carType = SaveManager.PlayerPrefs.LoadEnum(GarageSaveKeys.CurrentSelectedCar, CarTypes.CarBasic); 
+        _roomsManager.JoinRandomRoom(carType);
     }
 }

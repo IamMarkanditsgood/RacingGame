@@ -109,6 +109,7 @@ public class Garage : BasicScreen
 
     private void MainMenu()
     {
+        CarEvents.SaveParameters();
         UIManager.Instance.ShowScreen(ScreenTypes.MainMenu);
     }
 }
