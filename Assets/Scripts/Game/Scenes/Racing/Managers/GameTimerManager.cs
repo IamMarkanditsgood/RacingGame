@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class GameTimerManager : MonoBehaviourPunCallbacks, IPunObservable
@@ -71,6 +72,15 @@ public class GameTimerManager : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             _timeLeft = (float)stream.ReceiveNext();
+        }
+    }
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        Debug.Log($"MasterClient switched to {newMasterClient.NickName}");
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartTimer(_timeLeft);
         }
     }
 }

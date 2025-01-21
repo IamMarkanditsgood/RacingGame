@@ -18,10 +18,9 @@ public class PhotonRoomsManager : MonoBehaviourPunCallbacks
 
         roomOptions.CustomRoomProperties = roomProperties;
         roomOptions.CustomRoomPropertiesForLobby = new[] { "Level" };
+        string roomName = "Room_" + System.Guid.NewGuid().ToString();
+        PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
 
-        PhotonNetwork.CreateRoom("Room", roomOptions, TypedLobby.Default);
-
-        // «бер≥гаЇмо виб≥р машини у властивост€х гравц€
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable
     {
         { "CarType", carType }
@@ -32,7 +31,6 @@ public class PhotonRoomsManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinRandomRoom();
 
-        // «бер≥гаЇмо виб≥р машини у властивост€х гравц€
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable
     {
         { "CarType", carType }
