@@ -30,8 +30,12 @@ public class HandbrakeManager
 
     public void RecoverTraction()
     {
-        _isTractionLocked = false;
-        CarEvents.TireSkid(_isTractionLocked);
+        if (_isTractionLocked)
+        {
+            _isTractionLocked = false;
+            CarEvents.TireSkid(_isTractionLocked);
+        }
+
         _driftingAxis = Mathf.Max(0f, _driftingAxis - Time.deltaTime / 1.5f);
 
         if (_driftingAxis > 0f)
@@ -75,7 +79,6 @@ public class HandbrakeManager
                 UpdateWheelFriction(_wheelsFriction[i].wheelFriction, _wheelsFriction[i].wextremumSlip, _wheels[i].wheelCollider);
             }
         }
-
         _isTractionLocked = true;
         CarEvents.TireSkid(_isTractionLocked);
     }

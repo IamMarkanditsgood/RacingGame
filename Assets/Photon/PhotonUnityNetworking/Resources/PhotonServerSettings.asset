@@ -49,6 +49,10 @@ MonoBehaviour:
   - RPC_SyncTireSkid
   - RPC_HandleDriftEffect
   - RPC_HandleTireSkidEffect
+  - RPC_HandleTireSkidSound
+  - RPC_DriftSound
+  - RPC_TireSkidSound
+  - RPC_SetEnginePitch
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

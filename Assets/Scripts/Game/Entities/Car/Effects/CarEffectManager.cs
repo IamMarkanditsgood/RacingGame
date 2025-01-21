@@ -1,5 +1,4 @@
-﻿using System;
-using Photon.Pun;
+﻿using Photon.Pun;
 using UnityEngine;
 
 public class CarEffectManager : MonoBehaviourPunCallbacks
@@ -26,12 +25,14 @@ public class CarEffectManager : MonoBehaviourPunCallbacks
     public void Subscribe()
     {
         CarEvents.OnDrift += HandleDriftEffect;
+        CarEvents.OnDrift += HandleTireSkid;
         CarEvents.OnTireSkid += HandleTireSkid;
     }
 
     public void UnSubscribe()
     {
         CarEvents.OnDrift -= HandleDriftEffect;
+        CarEvents.OnDrift -= HandleTireSkid;
         CarEvents.OnTireSkid -= HandleTireSkid;
     }
 

@@ -73,6 +73,7 @@ public class CarController : MonoBehaviour
         _carMovementManager.Init(_carDataManager.CarData, gameObject);
 
         ConfigureCarEffects();
+        ConfigureCarSounds();
         ConfigureCarVisualCustomizer();
     }
 
@@ -85,6 +86,16 @@ public class CarController : MonoBehaviour
         }
     }
 
+    private void ConfigureCarSounds()
+    {
+        if (GetComponent<CarSoundsManager>())
+        {
+            CarSoundsManager carSoundsManager = GetComponent<CarSoundsManager>();
+            carSoundsManager.Init(_photonView);
+        }
+
+    }
+    
     private void ConfigureCarVisualCustomizer()
     {
 
@@ -94,6 +105,7 @@ public class CarController : MonoBehaviour
             carVisualCustomizer.Init();
         }
     }
+
 
     private void Subscribe()
     {
