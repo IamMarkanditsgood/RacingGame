@@ -8,7 +8,6 @@ public class WinPopup : BasicPopup
 {
     [SerializeField] private GameObject _leavingLoader;
     [SerializeField] private Button _mainMenu;
-    [SerializeField] private Button _getReward;
 
     private int points;
 
@@ -27,22 +26,13 @@ public class WinPopup : BasicPopup
         IronSource.Agent.init("20c5b769d", IronSourceAdUnits.REWARDED_VIDEO);
 
         _mainMenu.onClick.AddListener(MainMenu);
-        _getReward.onClick.AddListener(GetReward);
 
-        IronSourceRewardedVideoEvents.onAdAvailableEvent += RewardedVideoOnAdAvailable;
-        IronSourceRewardedVideoEvents.onAdUnavailableEvent += RewardedVideoOnAdUnavailable;
-        IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
     }
     public override void Unsubscribe()
     {
         base.Unsubscribe(); 
 
         _mainMenu.onClick.RemoveListener(MainMenu);
-        _getReward.onClick.RemoveListener(GetReward);
-
-        IronSourceRewardedVideoEvents.onAdAvailableEvent -= RewardedVideoOnAdAvailable;
-        IronSourceRewardedVideoEvents.onAdUnavailableEvent -= RewardedVideoOnAdUnavailable;
-        IronSourceRewardedVideoEvents.onAdRewardedEvent -= RewardedVideoOnAdRewardedEvent;
     }
 
     public void Init(int winedPoints)
@@ -99,43 +89,10 @@ public class WinPopup : BasicPopup
         Debug.Log("MasterClient switched to: " + newMasterClient.NickName);
     }
 
-    private void GetReward()
-    {
-        if (IronSource.Agent.isRewardedVideoAvailable())
-        {
-            IronSource.Agent.showRewardedVideo();
-        }
-        else
-        {
-            Debug.Log("Rewarded video is not available");
-        }
-    }
-
     private void AddReward()
     {
         ResourcesManager.Instance.ModifyResource(ResourceTypes.Coins, points);
         ResourcesManager.Instance.ModifyResource(ResourceTypes.TotalPoints, points);
     }
-    /************* RewardedVideo AdInfo Delegates *************/
-    // Indicates that there’s an available ad.
-    // The adInfo object includes information about the ad that was loaded successfully
-    // This replaces the RewardedVideoAvailabilityChangedEvent(true) event
-    void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
-    {
-        Debug.Log("Video Unavailable");
-    }
-    // Indicates that no ads are available to be displayed
-    // This replaces the RewardedVideoAvailabilityChangedEvent(false) event
-    void RewardedVideoOnAdUnavailable()
-    {
-        Debug.Log("Video Unavailable");
-    }
-    // The user completed to watch the video, and should be rewarded.
-    // The placement parameter will include the reward data.
-    // When using server-to-server callbacks, you may ignore this event and wait for the ironSource server callback.
-    void RewardedVideoOnAdRewardedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
-    {
-        AddReward();
-        Debug.Log("Total points: " + points);
-    }
+    
 }

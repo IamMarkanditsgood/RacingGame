@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: HandBrake
   _price: 1000
-  _componentImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _componentImage: {fileID: 21300000, guid: b159c4028fbf8bf4bb59407f8ed29c2d, type: 3}

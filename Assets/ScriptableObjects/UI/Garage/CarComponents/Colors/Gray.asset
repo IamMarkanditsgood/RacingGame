@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Gray
   _price: 100
-  _componentImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _componentImage: {fileID: 21300000, guid: d0dba87a6337d124cb90c23f0d93bdb0, type: 3}
   _carParameter: 1
   _material: {fileID: 2100000, guid: 104696f8b5f23d24586d858b68916bdc, type: 2}
   _ImageColor: {r: 0.4641509, g: 0.4641509, b: 0.4641509, a: 1}

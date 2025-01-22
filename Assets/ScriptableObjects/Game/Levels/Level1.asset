@@ -16,8 +16,6 @@ MonoBehaviour:
   _carPrefabs:
   - carType: 0
     carPrefab: {fileID: 1502887000207577150, guid: a620b15071afef84e9fb4b71912953a7, type: 3}
-  - carType: 1
-    carPrefab: {fileID: 1502887000207577150, guid: b27dc77288ef97f49b67e7a204c29316, type: 3}
   - carType: 2
     carPrefab: {fileID: 1502887000207577150, guid: f3fb609334bc11741ad4be8eb831b309, type: 3}
   _levelPrefabs:

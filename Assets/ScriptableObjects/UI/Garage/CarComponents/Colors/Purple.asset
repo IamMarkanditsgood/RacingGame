@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Purple
   _price: 100
-  _componentImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _componentImage: {fileID: 2310406903632030645, guid: 7f0d7499939e3d4468c39fe0d61db66d, type: 3}
   _carParameter: 1
   _material: {fileID: 2100000, guid: 74196cf5d503c14488ae1ef1dbc6c9a4, type: 2}
   _ImageColor: {r: 0.6063733, g: 0, b: 1, a: 1}

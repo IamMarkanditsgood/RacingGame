@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Wheels3
   _price: 5000
-  _componentImage: {fileID: 21300000, guid: 299ba41030d7a36409e6380e9317c890, type: 3}
+  _componentImage: {fileID: 21300000, guid: ba49f68ef659a9c4ea1e59ef1072ee58, type: 3}
   _carIntParameters: 0500000007000000
   _intValue: 2800000058020000
   _carFloatParameters: 06000000
